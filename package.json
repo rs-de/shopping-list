@@ -10,6 +10,9 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@mui/base": "^5.0.0-beta.8",
+    "@radix-ui/colors": "^1.0.1",
+    "@tailwindcss/typography": "^0.5.9",
     "@types/node": "20.4.3",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
@@ -25,7 +28,10 @@
     "prettier": "^3.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-icons": "^4.10.1",
     "tailwindcss": "3.3.3",
-    "typescript": "5.1.6"
+    "typescript": "5.1.6",
+    "windy-radix-palette": "^0.6.1",
+    "windy-radix-typography": "^0.2.1"
   }
 }
