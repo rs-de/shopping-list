@@ -30,7 +30,3 @@ export default function LocaleLayout({
     </html>
   );
 }
-
-export function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
-}

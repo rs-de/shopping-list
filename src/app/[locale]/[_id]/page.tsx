@@ -1,16 +1,12 @@
-import {
-  ShoppingList,
-  ShoppingListModel,
-  isShoppingList,
-} from "@/app/api/shoppinglist";
+import { ShoppingList, ShoppingListModel } from "@/app/api/shoppinglist";
 import { notFound } from "next/navigation";
 import InputArticle from "./InputArticle";
 import { MdOutlineAdd } from "react-icons/md";
 import { FiDelete } from "react-icons/fi";
 import Typography from "@/components/Typography";
 import { useTranslations } from "next-intl";
-import { revalidatePath } from "next/cache";
 import { ButtonPrimary } from "@/components/Button";
+import { deleteArticles, updateShoppinglist } from "./actions";
 
 export default async function ShoppingListPageSC({
   params: { _id },
@@ -29,41 +25,6 @@ export default async function ShoppingListPageSC({
   }
 
   return <ShoppingListPage shoppinglist={sl} />;
-}
-
-export async function updateShoppinglist(form: FormData) {
-  "use server";
-  let sl;
-  sl = await ShoppingListModel.findOne({
-    _id: form.get("_id")?.toString(),
-  });
-  if (!isShoppingList(sl)) {
-    notFound();
-  }
-  const newArticleText = form.get("new");
-  if (newArticleText && sl.articles.length < 150) {
-    sl.articles.push({ text: newArticleText.toString() });
-  }
-
-  if (isShoppingList(sl) && sl.isModified()) {
-    console.log("updated articles");
-    sl.save();
-    revalidatePath("/[locale]/[_id]");
-  }
-}
-
-export async function deleteArticles(form: FormData) {
-  "use server";
-  const idsToDelete = form.getAll("delete");
-
-  await ShoppingListModel.findByIdAndUpdate(form.get("_id"), {
-    $pull: { articles: { _id: { $in: idsToDelete } } },
-  }).exec();
-
-  if (idsToDelete.length > 0) {
-    console.log("delete articles");
-    revalidatePath("/[locale]/[_id]");
-  }
 }
 
 function ShoppingListPage({ shoppinglist }: { shoppinglist: ShoppingList }) {

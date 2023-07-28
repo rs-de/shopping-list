@@ -2,7 +2,7 @@
 import { UseAutocompleteProps, useAutocomplete } from "@mui/base";
 import { SyntheticEvent, useCallback, useEffect, useTransition } from "react";
 import { useDebounceCallback } from "@react-hook/debounce";
-import { saveArticleText } from "./saveArticleText";
+import { saveArticleText } from "./actions";
 
 export default function InputArticle({
   name,
