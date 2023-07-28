@@ -10,6 +10,7 @@ module.exports = {
     require("windy-radix-palette"),
     require("@tailwindcss/typography"),
     require("windy-radix-typography"),
+    require("@tailwindcss/forms"),
   ],
   theme: {
     extend: { colors: { ...generateAliasForRadixColors("primary", "blue") } },

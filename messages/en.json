@@ -1,3 +1,6 @@
 {
-  "title": "The good old \"Hello World!\""
+  "ShoppingList": "Shopping list",
+  "create_shoppingList": "New shopping list",
+  "shoppinglist-articles": "Shopping List",
+  "Add": "Add"
 }
