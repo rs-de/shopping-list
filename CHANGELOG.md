@@ -1,6 +1,6 @@
 ## Changelog
 
-## 1.0.0 2023-07-30
+## 1.0.1 2023-07-30
 
 ### Initial release of Minimum Viable Product based on web technologies
 
