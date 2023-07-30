@@ -2,7 +2,7 @@ import { NextIntlClientProvider, useMessages } from "next-intl";
 import { ReactNode } from "react";
 import Navbar from "./Navbar";
 import Link from "next/link";
-import { version } from "../../../package.json";
+import packageJson from "../../../package.json";
 
 export default function LocaleLayout({
   children,
@@ -26,7 +26,7 @@ export default function LocaleLayout({
               &copy;{new Date().getFullYear()} Dipl.-Math. (FH) Jochen Probst
             </div>
             <div className="whitespace-nowrap">
-              <Link href={"/changelog"}>v{version}</Link>
+              <Link href={"/changelog"}>v{packageJson.version}</Link>
             </div>
           </footer>
         </body>
