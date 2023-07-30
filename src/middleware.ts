@@ -1,7 +1,16 @@
-import createMiddleware from "next-intl/middleware";
+import createI18nMiddleware from "next-intl/middleware";
 import { defaultLocale, locales } from "./i18n/locales";
+import { NextRequest } from "next/server";
 
-export default createMiddleware({ locales, defaultLocale });
+const i18nMiddleware = createI18nMiddleware({ locales, defaultLocale });
+
+// This function can be marked `async` if using `await` inside
+export function middleware(request: NextRequest) {
+  const res = i18nMiddleware(request);
+  //ensure no cookies are set
+  res.headers.set("Set-Cookie", "");
+  return res;
+}
 
 export const config = {
   // Skip all paths that should not be internationalized. This example skips the
