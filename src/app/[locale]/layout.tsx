@@ -1,7 +1,8 @@
 import { NextIntlClientProvider, useMessages } from "next-intl";
 import { ReactNode } from "react";
 import Navbar from "./Navbar";
-import { locales } from "@/i18n/locales";
+import Link from "next/link";
+import { version } from "../../../package.json";
 
 export default function LocaleLayout({
   children,
@@ -23,6 +24,9 @@ export default function LocaleLayout({
           <footer className="flex justify-between bg-slate-2 text-slate-11 text-sm px-4 py-2">
             <div className="whitespace-nowrap">
               &copy;{new Date().getFullYear()} Dipl.-Math. (FH) Jochen Probst
+            </div>
+            <div className="whitespace-nowrap">
+              <Link href={"/changelog"}>v{version}</Link>
             </div>
           </footer>
         </body>
