@@ -13,10 +13,12 @@ export default function InputArticle({
   readOnly = false,
   freeSolo = true,
   className = "",
+  ariaLabel = "Article",
   ...rest
 }: UseAutocompleteProps<string, false, false, true> & {
   className?: string;
   name: string;
+  ariaLabel?: string;
 }) {
   const { getInputProps, getRootProps, focused } = useAutocomplete({
     value: undefined,
@@ -37,6 +39,7 @@ export default function InputArticle({
         enterKeyHint="enter"
         autoFocus
         disabled={disabled || pending}
+        aria-label={ariaLabel}
       />
     </div>
   );

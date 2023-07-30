@@ -2,5 +2,7 @@
   "ShoppingList": "Einkaufsliste",
   "create_shoppingList": "Neue Liste",
   "shoppinglist-articles": "Einkaufsliste",
-  "Add": "Hinzufügen"
+  "Add": "Hinzufügen",
+  "page-meta-description": "Super einfache und sichere Einkaufslisten-Webanwendung, kostenlos, mit anderen teilbar und ohne Registrierung.",
+  "input_article_to_add": "Artikel hinzufügen"
 }

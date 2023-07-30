@@ -84,6 +84,7 @@ function ShoppingListPage({ shoppinglist }: { shoppinglist: ShoppingList }) {
             name={"new"}
             options={[]}
             key={shoppinglist.articles.length}
+            ariaLabel={t("input_article_to_add")}
           />
         </div>
         <ButtonPrimary

@@ -1,4 +1,8 @@
-import { NextIntlClientProvider, useMessages } from "next-intl";
+import {
+  NextIntlClientProvider,
+  createTranslator,
+  useMessages,
+} from "next-intl";
 import { ReactNode } from "react";
 import Navbar from "./Navbar";
 import Link from "next/link";
@@ -33,4 +37,17 @@ export default function LocaleLayout({
       </NextIntlClientProvider>
     </html>
   );
+}
+
+export async function generateMetadata({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) {
+  const messages = (await import(`../../../messages/${locale}.json`)).default;
+  const t = createTranslator({ locale, messages });
+  return {
+    title: { default: t("ShoppingList") },
+    description: t("page-meta-description"),
+  };
 }
