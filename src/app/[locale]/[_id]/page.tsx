@@ -79,7 +79,12 @@ function ShoppingListPage({ shoppinglist }: { shoppinglist: ShoppingList }) {
         </div>
         <div className="mt-2 w-full flex items-center">
           <MdOutlineAdd />
-          <InputArticle className="flex-1" name={"new"} options={[]} />
+          <InputArticle
+            className="flex-1"
+            name={"new"}
+            options={[]}
+            key={shoppinglist.articles.length}
+          />
         </div>
         <ButtonPrimary
           type="submit"

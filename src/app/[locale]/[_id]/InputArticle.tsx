@@ -1,6 +1,7 @@
 "use client";
 import { UseAutocompleteProps, useAutocomplete } from "@mui/base";
-import { SyntheticEvent, useCallback, useEffect, useTransition } from "react";
+import { SyntheticEvent, useCallback } from "react";
+import { experimental_useFormStatus as useFormStatus } from "react-dom";
 import { useDebounceCallback } from "@react-hook/debounce";
 import { saveArticleText } from "./actions";
 
@@ -24,6 +25,7 @@ export default function InputArticle({
     ...useInputValue({ name, id }),
     ...rest,
   });
+  const { pending } = useFormStatus();
 
   return (
     <div {...{ ...getRootProps(), className }}>
@@ -32,6 +34,9 @@ export default function InputArticle({
         className="rounded-md w-full bg-slate-3"
         name={name}
         maxLength={75}
+        enterKeyHint="enter"
+        autoFocus
+        disabled={disabled || pending}
       />
     </div>
   );
