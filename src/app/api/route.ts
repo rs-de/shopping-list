@@ -1,23 +1,37 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ShoppingListModel } from "./shoppinglist";
+import { RateLimiterMemory, RateLimiterRes } from "rate-limiter-flexible";
+
+const rateLimiterConfig = { points: 1, duration: 5 };
+const rateLimiter = new RateLimiterMemory(rateLimiterConfig);
 
 export async function POST(req: NextRequest) {
   try {
-    const ip = req.ip ?? "unknown";
-    const count = await ShoppingListModel.countDocuments({ ip });
-    if (count > 10) {
-      console.error("Too many shopping lists");
-      return NextResponse.json({}, { status: 400 });
-    }
-
-    const { _id } = (
-      await ShoppingListModel.create({ ip, articles: [] })
-    ).toJSON();
+    const rateLimitResult = await rateLimiter.consume("POSTShoppingList", 1);
+    const { _id } = (await ShoppingListModel.create({ articles: [] })).toJSON();
     return NextResponse.redirect(new URL(`/${_id}`, req.url), {
       status: 303,
+      headers: rateLimitToHeaders(rateLimitResult),
     });
   } catch (error) {
     console.error(error);
-    return NextResponse.redirect(new URL(`/`, req.url), { status: 303 });
+    return new Response(null, {
+      status: 303,
+      headers: {
+        location: String(new URL(`/`, req.url)),
+        ...(isRateLimitError(error) && rateLimitToHeaders(error)),
+      },
+    });
   }
 }
+
+const isRateLimitError = (error: any): error is RateLimiterRes => {
+  return "msBeforeNext" in error;
+};
+
+const rateLimitToHeaders = (rl: RateLimiterRes) => ({
+  "retry-after": String(rl.msBeforeNext / 1000),
+  "x-rateLimit-limit": String(rateLimiterConfig.points),
+  "x-rateLimit-remaining": String(rl.remainingPoints),
+  "x-rateLimit-reset": String(new Date(Date.now() + rl.msBeforeNext)),
+});
