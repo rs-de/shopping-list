@@ -5,9 +5,9 @@ import { NextRequest } from "next/server";
 const i18nMiddleware = createI18nMiddleware({ locales, defaultLocale });
 
 // This function can be marked `async` if using `await` inside
-export function middleware(request: NextRequest) {
+export default function middleware(request: NextRequest) {
   const res = i18nMiddleware(request);
-  //ensure no cookies are set
+  //ensure no cookies are set, remove it to enable cookies
   res.headers.set("Set-Cookie", "");
   return res;
 }
