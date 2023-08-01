@@ -18,7 +18,7 @@ export async function updateShoppinglist(form: FormData) {
 
   if (isShoppingList(sl) && sl.isModified()) {
     console.log("updated articles");
-    sl.save();
+    await sl.save();
     revalidatePath("/[locale]/[_id]");
   }
 }
