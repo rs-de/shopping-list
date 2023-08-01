@@ -15,7 +15,6 @@ const articleSchema = new Schema({
 
 const shoppingListSchema = new Schema(
   {
-    ip: { type: String, required: true, maxLength: 75 },
     articles: [articleSchema],
   },
   { timestamps: true },
