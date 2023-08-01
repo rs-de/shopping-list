@@ -13,7 +13,11 @@ module.exports = {
     require("@tailwindcss/forms"),
   ],
   theme: {
-    extend: { colors: { ...generateAliasForRadixColors("primary", "blue") } },
+    extend: {
+      colors: { ...generateAliasForRadixColors("primary", "blue") },
+      minWidth: { 3: "3rem" },
+      minHeight: { 3: "3rem" },
+    },
   },
 };
 
