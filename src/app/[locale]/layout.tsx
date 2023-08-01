@@ -7,6 +7,8 @@ import { ReactNode } from "react";
 import Navbar from "./Navbar";
 import Link from "next/link";
 import packageJson from "../../../package.json";
+import { locales } from "@/i18n/locales";
+import { notFound } from "next/navigation";
 
 export default function LocaleLayout({
   children,
@@ -15,8 +17,10 @@ export default function LocaleLayout({
   children: ReactNode;
   params: { locale: string };
 }) {
+  if (!locales.includes(locale)) {
+    notFound();
+  }
   const messages = useMessages();
-
   return (
     <html lang={locale}>
       <NextIntlClientProvider {...{ locale, messages }}>
@@ -44,6 +48,9 @@ export async function generateMetadata({
 }: {
   params: { locale: string };
 }) {
+  if (!locales.includes(locale)) {
+    return {};
+  }
   const messages = (await import(`../../../messages/${locale}.json`)).default;
   const t = createTranslator({ locale, messages });
   return {
