@@ -16,7 +16,7 @@ const Button = forwardRef(function Button(
       ref={ref}
       disabled={pending}
       className={`${className} flex items-center justify-center border-2 border-primary-8 hover:border-primary-9 rounded-lg
-      bg-slate-2 min-w-3 min-h-3 disabled:opacity-50`}
+      bg-slate-2 px-2 min-w-3 min-h-3 disabled:opacity-50`}
     >
       {pending ? <Spinner /> : children}
     </MuiButton>

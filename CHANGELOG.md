@@ -1,5 +1,10 @@
 ## Changelog
 
+## 1.1.1 2023-08-01
+
+- Add rate limit on create list
+- Add loading spinners to some submit buttons
+
 ## 1.0.1 2023-07-30
 
 ### Initial release of Minimum Viable Product based on web technologies

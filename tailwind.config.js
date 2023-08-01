@@ -15,7 +15,7 @@ module.exports = {
   theme: {
     extend: {
       colors: { ...generateAliasForRadixColors("primary", "blue") },
-      minWidth: { 3: "3rem" },
+      minWidth: { 3: "3.5rem" },
       minHeight: { 3: "3rem" },
     },
   },
