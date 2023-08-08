@@ -28,7 +28,7 @@ export default function LocaleLayout({
       <NextIntlClientProvider {...{ locale, messages }}>
         <body className="box-border bg-blue-1 min-h-screen flex flex-col justify-between">
           <Navbar />
-          <main className="flex-1 flex flex-col items-center py-2">
+          <main className="flex-1 flex flex-col items-center bg-one bg-cover bg-center bg-no-repeat">
             {children}
           </main>
           <footer className="flex justify-between bg-slate-2 text-slate-11 text-sm px-4 py-2">
