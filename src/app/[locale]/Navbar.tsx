@@ -18,7 +18,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`transition-all z-10 sticky top-0 flex justify-between items-center px-4 py-2 bg-blue-2/80 backdrop-blur-md ${
+      className={`transition-all z-10 sticky top-0 flex justify-between items-center px-2 py-2 bg-blue-2/80 backdrop-blur-md ${
         !top && "shadow-md"
       }`}
     >
