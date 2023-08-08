@@ -23,7 +23,7 @@ export default function Navbar() {
       }`}
     >
       <div className="text-slate-11">
-        <Link href={`https://www.rushsoft.de`}>
+        <Link href={`/`}>
           <div className="flex items-center h-[40px] ">
             <Image
               priority

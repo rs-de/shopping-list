@@ -9,6 +9,7 @@ import Link from "next/link";
 import packageJson from "../../../package.json";
 import { locales } from "@/i18n/locales";
 import { notFound } from "next/navigation";
+import Head from "./Head";
 
 export default function LocaleLayout({
   children,
@@ -23,6 +24,7 @@ export default function LocaleLayout({
   const messages = useMessages();
   return (
     <html lang={locale}>
+      <Head />
       <NextIntlClientProvider {...{ locale, messages }}>
         <body className="box-border bg-blue-1 min-h-screen flex flex-col justify-between">
           <Navbar />
