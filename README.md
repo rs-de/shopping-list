@@ -1,9 +1,9 @@
 ## Shopping List web application
 
-This little application has been developed in order to learn and review some technologies and frameworks:
+This little application has been developed in order to learn and review some technologies and frameworks.
 
 - Next.js / React server actions (experimental)
-- [MUI base ui](https://mui.com/base-ui/getting-started/) (Material UI) with tailwindcss
+- tailwindcss
 - Mongoose / [MongoDB Atlas](https://www.mongodb.com)
 - [Vercel](https://vercel.com) for hosting
 

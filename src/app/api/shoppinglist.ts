@@ -19,21 +19,26 @@ const shoppingListSchema = new Schema(
   },
   { timestamps: true },
 );
-export type ShoppingList = HydratedDocument<
-  InferSchemaType<typeof shoppingListSchema>
->;
 
-export const isShoppingList = (obj: unknown): obj is ShoppingList =>
+export type ShoppingList = InferSchemaType<typeof shoppingListSchema> & {
+  _id: string;
+};
+export type ShoppingListDocument = Omit<
+  HydratedDocument<ShoppingList>,
+  "toObject"
+> & { toObject: () => ShoppingList };
+
+export const isShoppingList = (obj: unknown): obj is ShoppingListDocument =>
   typeof obj === "object" && obj !== null && "_id" in obj && "articles" in obj;
 
 export const ShoppingListModel =
   models?.["ShoppingList"] ??
   model<
-    ShoppingList,
+    ShoppingListDocument,
     Model<
-      ShoppingList,
+      ShoppingListDocument,
       {},
-      { articles: Types.DocumentArray<ShoppingList["articles"]> }
+      { articles: Types.DocumentArray<ShoppingListDocument["articles"]> }
     >
   >("ShoppingList", shoppingListSchema);
 

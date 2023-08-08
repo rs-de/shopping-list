@@ -4,5 +4,6 @@
   "shoppinglist-articles": "Shopping List",
   "Add": "Add",
   "page-meta-description": "Simple and secure shopping list webapp for free, shareable with others and without registration.",
-  "input_article_to_add": "Input article to add"
+  "input_article_to_add": "Input article to add",
+  "delete_selected_articles": "Delete selected articles"
 }

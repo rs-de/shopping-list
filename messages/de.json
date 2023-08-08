@@ -4,5 +4,6 @@
   "shoppinglist-articles": "Einkaufsliste",
   "Add": "Hinzufügen",
   "page-meta-description": "Super einfache und sichere Einkaufslisten-Webanwendung, kostenlos, mit anderen teilbar und ohne Registrierung.",
-  "input_article_to_add": "Artikel hinzufügen"
+  "input_article_to_add": "Artikel hinzufügen",
+  "delete_selected_articles": "Ausgewählte Artikel löschen"
 }

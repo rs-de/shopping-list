@@ -1,6 +1,5 @@
 "use client";
-import { UseAutocompleteProps, useAutocomplete } from "@mui/base";
-import { SyntheticEvent, useCallback } from "react";
+import { ChangeEventHandler, ComponentProps, useCallback } from "react";
 import { experimental_useFormStatus as useFormStatus } from "react-dom";
 import { useDebounceCallback } from "@react-hook/debounce";
 import { saveArticleText } from "./actions";
@@ -8,64 +7,48 @@ import { saveArticleText } from "./actions";
 export default function InputArticle({
   name,
   id = name,
-  disableClearable = false,
   disabled = false,
-  readOnly = false,
-  freeSolo = true,
-  className = "",
-  ariaLabel = "Article",
-  ...rest
-}: UseAutocompleteProps<string, false, false, true> & {
-  className?: string;
-  name: string;
-  ariaLabel?: string;
-}) {
-  const { getInputProps, getRootProps, focused } = useAutocomplete({
-    value: undefined,
-    id,
-    freeSolo,
-    ...useInputValue({ name, id }),
-    ...rest,
-  });
+  defaultValue,
+}: ComponentProps<"input"> & { ariaLabel?: string; name: string }) {
   const { pending } = useFormStatus();
-
+  const { onChange } = useInputValue({ name, id });
   return (
-    <div {...{ ...getRootProps(), className }}>
-      <input
-        {...getInputProps()}
-        className="rounded-md w-full bg-slate-3"
-        name={name}
-        maxLength={75}
-        enterKeyHint="enter"
-        autoFocus
-        disabled={disabled || pending}
-        aria-label={ariaLabel}
-      />
-    </div>
+    <input
+      onChange={onChange}
+      defaultValue={defaultValue}
+      className="rounded-md w-full bg-slate-3"
+      name={name}
+      maxLength={75}
+      enterKeyHint="enter"
+      autoFocus
+      disabled={disabled || pending}
+      aria-label={"Article"}
+    />
   );
 }
 
 function useInputValue({ name, id }: UseInputValueProps) {
-  const save = useCallback(
-    (e: SyntheticEvent, text: string) => {
+  const save = useCallback<ChangeEventHandler<HTMLInputElement>>(
+    (e) => {
       async function save() {
         console.log("save");
-        await saveArticleText({ id, text });
+        await saveArticleText({ id, text: e.target.value });
       }
+
       if (e) {
         save();
       }
     },
     [id],
   );
-  const onInputChange = useDebounceCallback(save, 500);
+  const onChange = useDebounceCallback(save, 500);
 
   if (name === id) {
     //no id, keep input uncontrolled
     return {};
   }
 
-  return { onInputChange };
+  return { onChange };
 }
 
 type UseInputValueProps = {
