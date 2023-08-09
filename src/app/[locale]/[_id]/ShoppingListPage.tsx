@@ -10,6 +10,7 @@ import { MdOutlineAdd } from "react-icons/md";
 import { ButtonPrimary } from "@/components/Button";
 import { FiDelete } from "react-icons/fi";
 import { Popover, Transition } from "@headlessui/react";
+import TextShadow from "@/components/TextShadow";
 
 export default function ShoppingListPage({
   shoppinglist,
@@ -21,9 +22,15 @@ export default function ShoppingListPage({
   const [checked, setChecked] = useState(new Set());
   const showDelete = checked.size > 0;
   return (
-    <Typography className="flex-1 flex flex-col items-center bg-gradient-to-b from-primary-2 to-transparent/80 p-2">
-      <h1 className="text-primary-11">{t("shoppinglist-articles")}</h1>
-      <form id="text" action={updateShoppinglist} className="w-full">
+    <Typography className="flex-1 flex flex-col items-center p-4">
+      <TextShadow>
+        <h1 className="text-primary-11">{t("shoppinglist-articles")}</h1>
+      </TextShadow>
+      <form
+        id="text"
+        action={updateShoppinglist}
+        className="w-full bg-primary-2/80 p-2 rounded-xl"
+      >
         <input type="hidden" name="_id" value={listId} />
         <div className="w-full grid grid-cols-[1fr_50px] gap-1">
           {shoppinglist.articles.map((article) =>
@@ -78,7 +85,7 @@ export default function ShoppingListPage({
         {() => (
           <Transition
             show={showDelete}
-            className="fixed bg-primary-2 shadow-2xl bottom-0 inset-x-0"
+            className="fixed bg-primary-2/80 rounded-xl shadow-2xl bottom-0 inset-x-0"
             enter="transition-y duration-300"
             enterFrom="translate-y-full"
             enterTo="translate-y-0"
