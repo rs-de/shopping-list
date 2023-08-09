@@ -23,23 +23,7 @@ export default function ShoppingListPage({
   const [checked, setChecked] = useState(new Set());
   const showDelete = checked.size > 0;
   useEffect(() => {
-    async function save() {
-      const request = indexedDB.open(LOCAL_STORAGE_KEY, 1);
-      request.onupgradeneeded = function (event: any) {
-        const db = event?.target?.result;
-        if (!db) return;
-        const objectStore = db.createObjectStore(LOCAL_STORAGE_KEY, {
-          keyPath: "id",
-        });
-        objectStore.transaction.oncomplete = () => {
-          const objectStore = db
-            .transaction(LOCAL_STORAGE_KEY, "readwrite")
-            .objectStore(LOCAL_STORAGE_KEY);
-          objectStore.add({ id: listId });
-        };
-      };
-    }
-    save();
+    localStorage.setItem(LOCAL_STORAGE_KEY, listId);
   });
   return (
     <Typography className="flex-1 flex flex-col items-center p-4">
@@ -62,7 +46,7 @@ export default function ShoppingListPage({
                   defaultValue={article.text}
                   className="flex-1"
                 />
-                <label className="box flex justify-center items-center ">
+                <div className="flex justify-center items-center ">
                   <input
                     type="checkbox"
                     name="delete"
@@ -77,8 +61,9 @@ export default function ShoppingListPage({
                         setChecked(new Set(checked));
                       }
                     }}
+                    aria-label="Delete article"
                   />
-                </label>
+                </div>
               </Fragment>
             ))(article._id!.toString()),
           )}

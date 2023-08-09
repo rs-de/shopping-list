@@ -27,3 +27,13 @@ export default async function ShoppingListPageSC({
     />
   );
 }
+
+export async function generateMetadata({
+  params: { _id, locale },
+}: {
+  params: { _id: string; locale: string };
+}) {
+  return {
+    manifest: `/${_id}/manifest`,
+  };
+}
