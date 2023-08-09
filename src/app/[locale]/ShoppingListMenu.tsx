@@ -8,13 +8,9 @@ import { useEffect, useState } from "react";
 import { LOCAL_STORAGE_KEY } from "../constants";
 
 export default function ShoppingListMenu() {
-  const params = useParams();
-  const [id, setId] = useState(params.id);
+  const [id, setId] = useState("");
   useEffect(() => {
     const localStorageId = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (id && localStorageId !== id) {
-      localStorage.setItem(LOCAL_STORAGE_KEY, String(id));
-    }
     if (!id && localStorageId) {
       setId(localStorageId);
     }
