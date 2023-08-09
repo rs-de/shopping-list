@@ -1,5 +1,11 @@
 ## Changelog
 
+# 1.2.0 2023-08-08
+
+- Show link to current List on landing page, instead of create new button
+- Enhance Progressive Web App (PWA) capabilities
+- Change general layout and styling (e.g. background image)
+
 ## 1.1.1 2023-08-01
 
 - Add rate limit on create list
