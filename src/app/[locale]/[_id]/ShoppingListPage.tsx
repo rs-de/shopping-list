@@ -4,13 +4,14 @@ import { ShoppingList } from "@/app/api/shoppinglist";
 import Typography from "@/components/Typography";
 import { useTranslations } from "next-intl";
 import { deleteArticles, updateShoppinglist } from "./actions";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import InputArticle from "./InputArticle";
 import { MdOutlineAdd } from "react-icons/md";
 import { ButtonPrimary } from "@/components/Button";
 import { FiDelete } from "react-icons/fi";
 import { Popover, Transition } from "@headlessui/react";
 import TextShadow from "@/components/TextShadow";
+import { LOCAL_STORAGE_KEY } from "@/app/constants";
 
 export default function ShoppingListPage({
   shoppinglist,
@@ -21,6 +22,9 @@ export default function ShoppingListPage({
   const listId = shoppinglist._id;
   const [checked, setChecked] = useState(new Set());
   const showDelete = checked.size > 0;
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, String(listId));
+  });
   return (
     <Typography className="flex-1 flex flex-col items-center p-4">
       <TextShadow>
