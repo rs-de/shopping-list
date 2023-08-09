@@ -15,7 +15,7 @@ module.exports = {
   theme: {
     extend: {
       colors: { ...generateAliasForRadixColors("primary", "blue") },
-      backgroundImage: { one: "url('/bg1.jpeg')" },
+      backgroundImage: { one: "url('/bg1.webp')" },
       minWidth: { 3: "3.5rem" },
       minHeight: { 3: "3rem" },
     },
