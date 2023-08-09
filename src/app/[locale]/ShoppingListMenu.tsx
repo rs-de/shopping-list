@@ -3,7 +3,6 @@
 import { ButtonPrimary } from "@/components/Button";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LOCAL_STORAGE_KEY } from "../constants";
 
@@ -11,10 +10,16 @@ export default function ShoppingListMenu() {
   const [id, setId] = useState<string | null>(null);
   useEffect(() => {
     async function load() {
-      const response = await caches
-        .open(LOCAL_STORAGE_KEY)
-        .then((cache) => cache.match("/id"));
-      setId(response ? await response.json() : "");
+      const request = indexedDB.open(LOCAL_STORAGE_KEY, 1);
+      request.onsuccess = (event: any) => {
+        const db = event?.target?.result;
+        db
+          .transaction(LOCAL_STORAGE_KEY)
+          .objectStore(LOCAL_STORAGE_KEY)
+          .getAll().onsuccess = function (event: any) {
+          setId(event?.target?.result[0]?.id ?? null);
+        };
+      };
     }
     load();
   }, []);

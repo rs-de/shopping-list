@@ -24,10 +24,20 @@ export default function ShoppingListPage({
   const showDelete = checked.size > 0;
   useEffect(() => {
     async function save() {
-      (await caches.open(LOCAL_STORAGE_KEY)).put(
-        "/id",
-        new Response(JSON.stringify(listId)),
-      );
+      const request = indexedDB.open(LOCAL_STORAGE_KEY, 1);
+      request.onupgradeneeded = function (event: any) {
+        const db = event?.target?.result;
+        if (!db) return;
+        const objectStore = db.createObjectStore(LOCAL_STORAGE_KEY, {
+          keyPath: "id",
+        });
+        objectStore.transaction.oncomplete = () => {
+          const objectStore = db
+            .transaction(LOCAL_STORAGE_KEY, "readwrite")
+            .objectStore(LOCAL_STORAGE_KEY);
+          objectStore.add({ id: listId });
+        };
+      };
     }
     save();
   });
