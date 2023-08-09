@@ -6,5 +6,7 @@
   "page-meta-description": "Simple and secure shopping list webapp for free, shareable with others and without registration.",
   "input_article_to_add": "Input article to add",
   "delete_selected_articles": "Delete selected articles",
-  "show-my-list": "Show my list"
+  "show-my-list": "Show my list",
+  "service_error": "The List could not be loaded.",
+  "reload": "Retry"
 }

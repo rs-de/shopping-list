@@ -3,8 +3,8 @@ import { notFound, useParams } from "next/navigation";
 import { NextResponse } from "next/server";
 
 export async function GET(
-  req: Request,
-  { params: { _id, locale } }: { params: { locale: string; _id: string } },
+  _: Request,
+  { params: { _id } }: { params: { _id: string } },
 ) {
   const sl = await ShoppingListModel.findOne({ _id });
   if (!sl) {

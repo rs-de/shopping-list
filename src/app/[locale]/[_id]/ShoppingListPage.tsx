@@ -12,19 +12,57 @@ import { FiDelete } from "react-icons/fi";
 import { Popover, Transition } from "@headlessui/react";
 import TextShadow from "@/components/TextShadow";
 import { LOCAL_STORAGE_KEY } from "@/app/constants";
+import { useRouter } from "next/navigation";
 
 export default function ShoppingListPage({
   shoppinglist,
+  shoppingListDoesNotExist = false,
 }: {
-  shoppinglist: ShoppingList;
+  shoppinglist?: ShoppingList;
+  shoppingListDoesNotExist: boolean;
 }) {
   const t = useTranslations();
-  const listId = shoppinglist._id;
+  const listId = shoppinglist?._id;
   const [checked, setChecked] = useState(new Set());
   const showDelete = checked.size > 0;
+  const router = useRouter();
   useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, listId);
-  });
+    listId && localStorage.setItem(LOCAL_STORAGE_KEY, listId);
+  }, [listId]);
+  useEffect(() => {
+    shoppingListDoesNotExist && localStorage.removeItem(LOCAL_STORAGE_KEY);
+  }, [shoppingListDoesNotExist]);
+
+  useEffect(() => {
+    if (shoppingListDoesNotExist) {
+      router.push("/");
+    }
+  }, [shoppingListDoesNotExist, router]);
+
+  if (!listId) {
+    return (
+      <Typography className="flex-1 flex flex-col items-center p-4">
+        <div className="border border-yellow-8 rounded-lg p-2 bg-yellow-4 mb-4">
+          {t("service_error")}
+        </div>
+        <form
+          action={async function () {
+            return new Promise((resolve) => {
+              document.onload = () => {
+                resolve();
+              };
+              document.location.reload();
+            });
+          }}
+        >
+          <ButtonPrimary type="submit" formMethod="get">
+            {t("reload")}
+          </ButtonPrimary>
+        </form>
+      </Typography>
+    );
+  }
+
   return (
     <Typography className="flex-1 flex flex-col items-center p-4">
       <TextShadow>
@@ -106,7 +144,6 @@ export default function ShoppingListPage({
                   })
                 }
                 className="w-full p-8"
-                onChange={(e) => console.log(e)}
               >
                 <input type="hidden" name="_id" value={listId} />
                 <div className="flex justify-center">

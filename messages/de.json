@@ -6,5 +6,7 @@
   "page-meta-description": "Super einfache und sichere Einkaufslisten-Webanwendung, kostenlos, mit anderen teilbar und ohne Registrierung.",
   "input_article_to_add": "Artikel hinzufügen",
   "delete_selected_articles": "Ausgewählte Artikel löschen",
-  "show-my-list": "Meine Liste"
+  "show-my-list": "Meine Liste",
+  "service_error": "Die Liste konnte nicht geladen werden.",
+  "reload": "Nochmal versuchen"
 }

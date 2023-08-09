@@ -13,25 +13,23 @@ export default async function ShoppingListPageSC({
   let sl: ShoppingListDocument | null;
   try {
     sl = await ShoppingListModel.findOne({ _id });
-    if (!sl) {
-      notFound();
-    }
   } catch (error) {
     console.error(error);
-    notFound();
+    return notFound();
   }
 
   return (
     <ShoppingListPage
-      shoppinglist={JSON.parse(JSON.stringify(sl.toObject()))}
+      shoppinglist={sl && JSON.parse(JSON.stringify(sl.toObject()))}
+      shoppingListDoesNotExist={sl === null}
     />
   );
 }
 
 export async function generateMetadata({
-  params: { _id, locale },
+  params: { _id },
 }: {
-  params: { _id: string; locale: string };
+  params: { _id: string };
 }) {
   return {
     manifest: `/${_id}/manifest`,
