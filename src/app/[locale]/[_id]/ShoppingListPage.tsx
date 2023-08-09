@@ -23,7 +23,13 @@ export default function ShoppingListPage({
   const [checked, setChecked] = useState(new Set());
   const showDelete = checked.size > 0;
   useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, String(listId));
+    async function save() {
+      (await caches.open(LOCAL_STORAGE_KEY)).put(
+        "/id",
+        new Response(JSON.stringify(listId)),
+      );
+    }
+    save();
   });
   return (
     <Typography className="flex-1 flex flex-col items-center p-4">

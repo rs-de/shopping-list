@@ -4,6 +4,16 @@ export default function Head() {
       <link rel="manifest" href="/manifest.json" />
       <link rel="apple-touch-icon" href="icons/apple-icon-180.png" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta
+        name="theme-color"
+        media="(prefers-color-scheme: light)"
+        content="white"
+      />
+      <meta
+        name="theme-color"
+        media="(prefers-color-scheme: dark)"
+        content="black"
+      />
       <link
         rel="apple-touch-startup-image"
         href="icons/apple-splash-dark-2048-2732.jpg"
