@@ -13,6 +13,7 @@ import { Popover, Transition } from "@headlessui/react";
 import TextShadow from "@/components/TextShadow";
 import { LOCAL_STORAGE_KEY } from "@/app/constants";
 import { useRouter } from "next/navigation";
+import ButtonShare from "@/components/ButtonShare";
 
 export default function ShoppingListPage({
   shoppinglist,
@@ -115,14 +116,17 @@ export default function ShoppingListPage({
             ariaLabel={t("input_article_to_add")}
           />
         </div>
-        <ButtonPrimary
-          type="submit"
-          name="_action"
-          value="save"
-          className="w-full mt-2"
-        >
-          {t("Add")}
-        </ButtonPrimary>
+        <div className="w-full mt-2 flex gap-2">
+          <ButtonShare />
+          <ButtonPrimary
+            type="submit"
+            name="_action"
+            value="save"
+            className="flex-1"
+          >
+            {t("Add")}
+          </ButtonPrimary>
+        </div>
       </form>
       <Popover className="w-full">
         {() => (

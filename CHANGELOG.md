@@ -3,6 +3,7 @@
 ## 1.3.0 2023-08-10
 
 - Add "Buy me a coffee" link to navbar
+- Add "Share" Button
 
 ## 1.2.0 2023-08-08
 

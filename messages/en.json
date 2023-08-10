@@ -8,5 +8,7 @@
   "delete_selected_articles": "Delete selected articles",
   "show-my-list": "Show my list",
   "service_error": "The List could not be loaded.",
-  "reload": "Retry"
+  "reload": "Retry",
+  "share": "Share this list",
+  "share-text": "Securely share a link to this list."
 }

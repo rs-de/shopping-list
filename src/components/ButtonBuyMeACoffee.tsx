@@ -6,7 +6,7 @@ export default function ButtonBuyMeACoffee({
 }: ComponentProps<"a">) {
   return (
     <a
-      className={`group flex justify-center items-center gap-2 bg-primary-8 hover:bg-primary-9 p-1 text-sm text-primary-12 rounded-lg ${className}`}
+      className={`group flex justify-center items-center gap-2 bg-primary-8 hover:bg-primary-9 p-1 text-sm text-slate-100 rounded-lg ${className}`}
       href="https://www.buymeacoffee.com/myq7pryb6fO"
       target="_blank"
       {...rest}

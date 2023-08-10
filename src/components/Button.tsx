@@ -31,7 +31,7 @@ export const ButtonSecondary = ({ className = "", ...props }: ButtonProps) => (
 export const ButtonPrimary = ({ className = "", ...props }: ButtonProps) => (
   <Button
     {...props}
-    className={`font-bold text-blue-11 border-2 border-primary-8 hover:border-primary-9 ${className}`}
+    className={`font-bold text-blue-11 border-2 border-primary-8 hover:border-primary-9 bg-primary-3 ${className}`}
   >
     {props.children}
   </Button>
