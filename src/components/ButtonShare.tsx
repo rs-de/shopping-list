@@ -5,10 +5,7 @@ import { ComponentProps } from "react";
 
 export default function ButtonShare(props: ComponentProps<"button">) {
   const t = useTranslations();
-  //ignore linter warning "This condition will always return true since this function is always defined. Did you mean to call it instead?ts(2774)"
-  //since location.share is not supported in all browsers!
-  //@ts-ignore
-  const text = navigator.share ? t("share") : t("copy-link");
+  const text = nativeShareIsAvailable() ? t("share") : t("copy-link");
   return (
     <button
       type="button"
@@ -34,7 +31,7 @@ export default function ButtonShare(props: ComponentProps<"button">) {
           await navigator.clipboard.writeText(url);
         }
       }}
-      title={t("copy-link-tile")}
+      title={nativeShareIsAvailable() ? "" : t("copy-link-tile")}
     >
       <svg
         fill="#dddddd"
@@ -58,4 +55,10 @@ export default function ButtonShare(props: ComponentProps<"button">) {
       {text}
     </button>
   );
+}
+
+//as a function will ignore linter warning "This condition will always return true since this function is always defined. Did you mean to call it instead?ts(2774)"
+//since location.share is not supported in all browsers!
+function nativeShareIsAvailable() {
+  return navigator.share;
 }
