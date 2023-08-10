@@ -10,5 +10,7 @@
   "service_error": "The List could not be loaded.",
   "reload": "Retry",
   "share": "Share this list",
-  "share-text": "Securely share a link to this list."
+  "share-text": "Securely share a link to this list.",
+  "copy-link": "Copy Link to share",
+  "copy-link-tile": "Copy link to share with others"
 }

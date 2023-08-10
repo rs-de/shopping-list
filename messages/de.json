@@ -10,5 +10,7 @@
   "service_error": "Die Liste konnte nicht geladen werden.",
   "reload": "Nochmal versuchen",
   "share": "Mit anderen teilen",
-  "share-text": "Teile den Link zu dieser Einkaufsliste mit anderen. Der Link ist weltweit eindeutig und lässt sich nicht erraten."
+  "share-text": "Teile den Link zu dieser Einkaufsliste mit anderen. Der Link ist weltweit eindeutig und lässt sich nicht erraten.",
+  "copy-link": "Link kopieren",
+  "copy-link-tile": "Link zu dieser Liste kopieren, um ihn mit anderen zu teilen."
 }

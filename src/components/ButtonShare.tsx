@@ -5,30 +5,36 @@ import { ComponentProps } from "react";
 
 export default function ButtonShare(props: ComponentProps<"button">) {
   const t = useTranslations();
-  if (!navigator.share) {
-    return null;
-  }
-
+  //ignore linter warning "This condition will always return true since this function is always defined. Did you mean to call it instead?ts(2774)"
+  //since location.share is not supported in all browsers!
+  //@ts-ignore
+  const text = navigator.share ? t("share") : t("copy-link");
   return (
     <button
       type="button"
       className="group flex justify-center items-center border border-slate-8 hover:border-slate-9 bg-primary-2 p-1 text-sm text-slate-11 hover:text-slate-12 rounded-lg"
       onClick={async (e) => {
-        try {
-          e.preventDefault();
-          navigator.share({
-            url: String(
-              document.querySelector('link[rel="canonical"]') ||
-                document.location.href,
-            ),
-            text: t("share-text"),
-            title: document.title,
-          });
-          return false;
-        } catch (error) {
-          console.error(error);
+        const url = String(
+          document.querySelector('link[rel="canonical"]') ||
+            document.location.href,
+        );
+        if (navigator.share) {
+          try {
+            e.preventDefault();
+            navigator.share({
+              url,
+              text: t("share-text"),
+              title: document.title,
+            });
+            return false;
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          await navigator.clipboard.writeText(url);
         }
       }}
+      title={t("copy-link-tile")}
     >
       <svg
         fill="#dddddd"
@@ -49,7 +55,7 @@ export default function ButtonShare(props: ComponentProps<"button">) {
           <path d="M35 40H15c-1.7 0-3-1.3-3-3V19c0-1.7 1.3-3 3-3h7v2h-7c-.6 0-1 .4-1 1v18c0 .6.4 1 1 1h20c.6 0 1-.4 1-1V19c0-.6-.4-1-1-1h-7v-2h7c1.7 0 3 1.3 3 3v18c0 1.7-1.3 3-3 3z"></path>
         </g>
       </svg>
-      {t("share")}
+      {text}
     </button>
   );
 }
