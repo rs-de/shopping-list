@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import ButtonBuyMeACoffee from "@/components/ButtonBuyMeACoffee";
 
 export default function Navbar() {
   const [top, setTop] = useState(true);
@@ -40,7 +41,7 @@ export default function Navbar() {
           </div>
         </Link>
       </div>
-      &nbsp;
+      <ButtonBuyMeACoffee />
     </nav>
   );
 }

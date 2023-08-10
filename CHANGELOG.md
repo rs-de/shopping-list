@@ -1,6 +1,10 @@
-## Changelog
+# Changelog
 
-# 1.2.0 2023-08-08
+## 1.3.0 2023-08-10
+
+- Add "Buy me a coffee" link to navbar
+
+## 1.2.0 2023-08-08
 
 - Show link to current List on landing page, instead of create new button
 - Enhance Progressive Web App (PWA) capabilities
