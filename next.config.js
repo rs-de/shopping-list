@@ -19,6 +19,9 @@ module.exports = withPWA(
         serverActions: true,
         mdxRs: true,
       },
+      env: {
+        npm_package_version: process.env.npm_package_version,
+      },
     }),
   ),
 );

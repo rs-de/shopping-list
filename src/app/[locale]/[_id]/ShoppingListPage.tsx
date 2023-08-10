@@ -1,5 +1,4 @@
 "use client";
-
 import { ShoppingList } from "@/app/api/shoppinglist";
 import Typography from "@/components/Typography";
 import { useTranslations } from "next-intl";
@@ -12,8 +11,9 @@ import { FiDelete } from "react-icons/fi";
 import { Popover, Transition } from "@headlessui/react";
 import TextShadow from "@/components/TextShadow";
 import { LOCAL_STORAGE_KEY } from "@/app/constants";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import ButtonShare from "@/components/ButtonShare";
+const appVersion = process.env.npm_package_version;
 
 export default function ShoppingListPage({
   shoppinglist,
@@ -27,6 +27,8 @@ export default function ShoppingListPage({
   const [checked, setChecked] = useState(new Set());
   const showDelete = checked.size > 0;
   const router = useRouter();
+  const pathname = usePathname();
+
   useEffect(() => {
     listId && localStorage.setItem(LOCAL_STORAGE_KEY, listId);
   }, [listId]);
@@ -39,6 +41,28 @@ export default function ShoppingListPage({
       router.push("/");
     }
   }, [shoppingListDoesNotExist, router]);
+  useEffect(() => {
+    window.addEventListener("visibilitychange", function () {
+      console.log("Visibility changed");
+      if (document.visibilityState === "visible") {
+        fetch(`${pathname}/versions`).then((res) => {
+          res
+            .json()
+            .then(
+              (data: { shoppingListVersion: string; appVersion: string }) => {
+                if (
+                  data.shoppingListVersion !==
+                    String(shoppinglist?.updatedAt) ||
+                  data.appVersion !== appVersion
+                ) {
+                  document.location.reload();
+                }
+              },
+            );
+        });
+      }
+    });
+  }, []);
 
   if (!listId) {
     return (

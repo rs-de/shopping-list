@@ -4,6 +4,7 @@
 
 - Add "Buy me a coffee" link to navbar
 - Add "Share" Button
+- Reload app, if shopping list or app version has changed
 
 ## 1.2.0 2023-08-08
 
