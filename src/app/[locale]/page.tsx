@@ -9,8 +9,8 @@ export default function Index() {
   return (
     <Typography className="flex-1 flex flex-col justify-between items-center w-full mt-4">
       <TextShadow className="flex flex-col items-center">
-        <h1 className="text-primary-11">{t("ShoppingList")}</h1>
-        <p className="text-white">Simple - Secure - Anonymous - Free</p>
+        <h1 className="!text-primary-11">{t("ShoppingList")}</h1>
+        <h2 className="!text-primary-11">Simple - Secure - Anonymous - Free</h2>
       </TextShadow>
       <ShoppingListMenu />
       &nbsp;

@@ -6,7 +6,7 @@ export default function TextShadow({
 }: ComponentProps<"div">) {
   return (
     <div
-      className={`[text-shadow:0px_0px_1em_black,0px_0px_1em_black,0px_0px_1em_black,0px_0px_1em_black,0px_0px_1em_black,0px_0px_1em_black,0px_0px_1em_black] ${className}`}
+      className={`[text-shadow:0px_0px_1em_white,0px_0px_1em_white,0px_0px_1em_white,0px_0px_1em_white,0px_0px_1em_white,0px_0px_1em_white,0px_0px_1em_white] ${className}`}
     >
       {children}
     </div>

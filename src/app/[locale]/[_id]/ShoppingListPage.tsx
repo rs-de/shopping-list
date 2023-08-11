@@ -5,9 +5,8 @@ import { useTranslations } from "next-intl";
 import { deleteArticles, updateShoppinglist } from "./actions";
 import { Fragment, useEffect, useState } from "react";
 import InputArticle from "./InputArticle";
-import { MdOutlineAdd } from "react-icons/md";
+import { Plus, Backspace } from "heroicons-react";
 import { ButtonPrimary } from "@/components/Button";
-import { FiDelete } from "react-icons/fi";
 import { Popover, Transition } from "@headlessui/react";
 import TextShadow from "@/components/TextShadow";
 import { LOCAL_STORAGE_KEY } from "@/app/constants";
@@ -132,7 +131,7 @@ export default function ShoppingListPage({
           )}
         </div>
         <div className="mt-2 w-full flex items-center">
-          <MdOutlineAdd />
+          <Plus />
           <InputArticle
             className="flex-1"
             name={"new"}
@@ -181,7 +180,7 @@ export default function ShoppingListPage({
                     value="delete"
                     className="w-full"
                   >
-                    <FiDelete />
+                    <Backspace />
                     &nbsp;
                     {t("delete_selected_articles")}
                   </ButtonPrimary>

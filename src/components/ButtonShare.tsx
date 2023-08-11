@@ -7,6 +7,7 @@ export default function ButtonShare(props: ComponentProps<"button">) {
   const t = useTranslations();
   const [hasShare, setHasShare] = useState(true);
   useEffect(() => {
+    //beware, share is only available in secure contexts (https)
     setHasShare(nativeShareIsAvailable());
   }, []);
 
@@ -19,7 +20,7 @@ export default function ButtonShare(props: ComponentProps<"button">) {
           document.querySelector('link[rel="canonical"]') ||
             document.location.href,
         );
-        if (navigator.share) {
+        if (hasShare) {
           try {
             e.preventDefault();
             navigator.share({
@@ -32,13 +33,14 @@ export default function ButtonShare(props: ComponentProps<"button">) {
             console.error(error);
           }
         } else {
-          await navigator.clipboard.writeText(url);
+          //clipboard is not supported in all browsers!
+          await navigator.clipboard?.writeText(url);
         }
       }}
-      title={hasShare ? "" : t("copy-link-tile")}
+      title={hasShare ? t("share-text") : t("copy-link-tile")}
     >
       <svg
-        fill="#dddddd"
+        className="fill-slate-11 group-hover:fill-slate-12"
         width={20}
         height={20}
         viewBox="0 0 50 50"
