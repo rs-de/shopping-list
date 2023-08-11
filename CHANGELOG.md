@@ -1,10 +1,15 @@
 # Changelog
 
+## 1.3.2 2023-08-11
+
+- Enable snappy page transitions
+- Optimize background image scale on small devices
+- Reload app, if shopping list or app version has changed
+
 ## 1.3.0 2023-08-10
 
 - Add "Buy me a coffee" link to navbar
 - Add "Share" Button
-- Reload app, if shopping list or app version has changed
 
 ## 1.2.0 2023-08-08
 
