@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { LOCAL_STORAGE_KEY } from "../constants";
+import TextShadow from "@/components/TextShadow";
 
 export default function ShoppingListMenu() {
   const [id, setId] = useState<string | null>(null);
@@ -15,7 +16,14 @@ export default function ShoppingListMenu() {
   const t = useTranslations();
   return id !== null ? (
     id ? (
-      <Link href={`/${id}`}>{t("show-my-list")}</Link>
+      <TextShadow>
+        <Link
+          href={`/${id}`}
+          className="text-lg font-bold text-primary-9 hover:text-primary-10"
+        >
+          {t("show-my-list")}
+        </Link>
+      </TextShadow>
     ) : (
       <form action="/api" method="post">
         <ButtonPrimary
