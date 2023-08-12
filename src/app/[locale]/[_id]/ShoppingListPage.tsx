@@ -2,8 +2,8 @@
 import { ShoppingList } from "@/app/api/shoppinglist";
 import Typography from "@/components/Typography";
 import { useTranslations } from "next-intl";
-import { deleteArticles, updateShoppinglist } from "./actions";
-import { Fragment, useEffect, useState } from "react";
+import { deleteArticles, rejigArticles, updateShoppinglist } from "./actions";
+import { Fragment, useEffect, useRef, useState } from "react";
 import InputArticle from "./InputArticle";
 import { Plus, Backspace } from "heroicons-react";
 import { ButtonPrimary } from "@/components/Button";
@@ -12,6 +12,8 @@ import TextShadow from "@/components/TextShadow";
 import { LOCAL_STORAGE_KEY } from "@/app/constants";
 import { usePathname, useRouter } from "next/navigation";
 import ButtonShare from "@/components/ButtonShare";
+import Rejig from "./Rejig";
+import { RejigContextProvider } from "./RejigContext";
 const appVersion = process.env.npm_package_version;
 
 export default function ShoppingListPage({
@@ -25,24 +27,28 @@ export default function ShoppingListPage({
   const listId = shoppinglist?._id;
   const [checked, setChecked] = useState(new Set());
   const showDelete = checked.size > 0;
+  const showRejig =
+    checked.size > 0 && (shoppinglist?.articles.length ?? 0) > 5;
   const router = useRouter();
   const pathname = usePathname();
 
+  //save list id to local storage
   useEffect(() => {
     listId && localStorage.setItem(LOCAL_STORAGE_KEY, listId);
   }, [listId]);
+  //remove list id from local storage, if list does not exist
   useEffect(() => {
     shoppingListDoesNotExist && localStorage.removeItem(LOCAL_STORAGE_KEY);
   }, [shoppingListDoesNotExist]);
-
+  //redirect to home page, if list does not exist
   useEffect(() => {
     if (shoppingListDoesNotExist) {
       router.push("/");
     }
   }, [shoppingListDoesNotExist, router]);
+  //reload page, if list was updated or app-version changed
   useEffect(() => {
     window.addEventListener("visibilitychange", function () {
-      console.log("Visibility changed");
       if (document.visibilityState === "visible") {
         fetch(`${pathname}/versions`).then((res) => {
           res
@@ -61,7 +67,8 @@ export default function ShoppingListPage({
         });
       }
     });
-  }, []);
+  }, [pathname, shoppinglist?.updatedAt]);
+  const rejigMenuAnchorElementRef = useRef<HTMLDivElement>(null);
 
   if (!listId) {
     return (
@@ -92,65 +99,95 @@ export default function ShoppingListPage({
       <TextShadow>
         <h1 className="text-primary-11">{t("shoppinglist-articles")}</h1>
       </TextShadow>
-      <form
-        id="text"
-        action={updateShoppinglist}
-        className="w-full bg-primary-2/80 p-2 rounded-xl"
-      >
-        <input type="hidden" name="_id" value={listId} />
-        <div className="w-full grid grid-cols-[1fr_50px] gap-1">
-          {shoppinglist.articles.map((article) =>
-            ((id: string) => (
-              <Fragment key={id}>
-                <InputArticle
-                  id={id}
-                  name={"text"}
-                  defaultValue={article.text}
-                  className="flex-1"
-                />
-                <div className="flex justify-center items-center ">
-                  <input
-                    type="checkbox"
-                    name="delete"
-                    value={id}
-                    className="mt-[0.05rem]"
-                    form="delete-form"
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setChecked(new Set(checked.add(e.target.value)));
-                      } else {
-                        checked.delete(e.target.value);
-                        setChecked(new Set(checked));
-                      }
-                    }}
-                    aria-label="Delete article"
+      <RejigContextProvider>
+        <form
+          id="text"
+          action={updateShoppinglist}
+          className="w-full bg-primary-2/80 p-2 rounded-xl"
+        >
+          <input type="hidden" name="_id" value={listId} />
+          <div className="w-full grid grid-cols-[1fr_50px] gap-1">
+            {shoppinglist.articles.map((article, index) =>
+              ((id: string) => (
+                <Fragment key={id}>
+                  <InputArticle
+                    id={id}
+                    name={"text"}
+                    defaultValue={article.text}
+                    className="flex-1"
                   />
-                </div>
-              </Fragment>
-            ))(article._id!.toString()),
-          )}
-        </div>
-        <div className="mt-2 w-full flex items-center">
-          <Plus />
-          <InputArticle
-            className="flex-1"
-            name={"new"}
-            key={shoppinglist.articles.length}
-            ariaLabel={t("input_article_to_add")}
-          />
-        </div>
-        <div className="w-full mt-2 flex gap-2">
-          <ButtonShare />
-          <ButtonPrimary
-            type="submit"
-            name="_action"
-            value="save"
-            className="flex-1"
-          >
-            {t("Add")}
-          </ButtonPrimary>
-        </div>
-      </form>
+                  <div
+                    className="flex justify-center items-center "
+                    ref={index === 0 ? rejigMenuAnchorElementRef : undefined}
+                  >
+                    <input
+                      type="checkbox"
+                      name="selected"
+                      value={id}
+                      className="mt-[0.05rem]"
+                      form="article-selection"
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setChecked(new Set(checked.add(e.target.value)));
+                        } else {
+                          checked.delete(e.target.value);
+                          setChecked(new Set(checked));
+                        }
+                      }}
+                      checked={checked.has(id)}
+                      aria-label="Delete article"
+                    />
+                  </div>
+                </Fragment>
+              ))(article._id!.toString()),
+            )}
+            <Popover
+              className={`fixed mt-[-35px]`}
+              style={{
+                left:
+                  (rejigMenuAnchorElementRef.current?.getBoundingClientRect()
+                    .left ?? 300) - 100,
+              }}
+            >
+              {() => (
+                <Transition
+                  show={showRejig}
+                  enter="transition-all duration-75"
+                  enterFrom="opacity-0 scale-50"
+                  enterTo="opacity-100 scale-100"
+                  leave="transition-all duration-150"
+                  leaveFrom="opacity-100 scale-100"
+                  leaveTo="opacity-0 scale-50"
+                >
+                  <Popover.Panel static className="bg-primary-2 p-2">
+                    <Rejig />
+                  </Popover.Panel>
+                </Transition>
+              )}
+            </Popover>
+          </div>
+          <div className="mt-2 w-full flex items-center">
+            <Plus />
+            <InputArticle
+              className="flex-1"
+              name={"new"}
+              key={shoppinglist.articles.length}
+              ariaLabel={t("input_article_to_add")}
+            />
+          </div>
+          <div className="w-full mt-2 flex gap-2">
+            <ButtonShare />
+            <ButtonPrimary
+              type="submit"
+              name="_action"
+              value="save"
+              className="flex-1"
+            >
+              {t("Add")}
+            </ButtonPrimary>
+          </div>
+        </form>
+      </RejigContextProvider>
       <Popover className="w-full">
         {() => (
           <Transition
@@ -164,12 +201,16 @@ export default function ShoppingListPage({
           >
             <Popover.Panel static>
               <form
-                id="delete-form"
-                action={async (formData) =>
-                  deleteArticles(formData).then(() => {
-                    setChecked(new Set());
-                  })
-                }
+                id="article-selection"
+                action={async (formData) => {
+                  return formData.get("_action") === "delete"
+                    ? deleteArticles(formData).finally(() => {
+                        setChecked(new Set());
+                      })
+                    : rejigArticles(formData).finally(() => {
+                        setChecked(new Set());
+                      });
+                }}
                 className="w-full p-8"
               >
                 <input type="hidden" name="_id" value={listId} />

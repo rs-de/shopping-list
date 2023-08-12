@@ -13,6 +13,8 @@ const articleSchema = new Schema({
   text: { type: String, required: true },
 });
 
+export type Article = InferSchemaType<typeof articleSchema> & { _id?: string };
+
 const shoppingListSchema = new Schema(
   {
     articles: [articleSchema],
