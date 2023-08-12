@@ -1,10 +1,11 @@
 # Changelog
 
-## 1.3.2 2023-08-11
+## 1.4.0 2023-08-12
 
 - Enable snappy page transitions
 - Optimize background image scale on small devices
 - Reload app, if shopping list or app version has changed
+- Add widget to quickly change sequence of articles
 
 ## 1.3.0 2023-08-10
 
