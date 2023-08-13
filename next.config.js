@@ -25,7 +25,7 @@ module.exports = withPWA(
       async headers() {
         return [
           {
-            source: "/",
+            source: "/:locale?",
             headers: [
               {
                 key: "Cache-Control",
