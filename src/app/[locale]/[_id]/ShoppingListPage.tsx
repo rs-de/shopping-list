@@ -159,7 +159,10 @@ export default function ShoppingListPage({
                   leaveFrom="opacity-100 scale-100"
                   leaveTo="opacity-0 scale-50"
                 >
-                  <Popover.Panel static className="bg-primary-2 p-2">
+                  <Popover.Panel
+                    static
+                    className="bg-primary-2 p-2 shadow-xl border-2 border-primary-6 rounded-lg"
+                  >
                     <Rejig />
                   </Popover.Panel>
                 </Transition>

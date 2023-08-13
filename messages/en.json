@@ -12,5 +12,9 @@
   "share": "Share this list",
   "share-text": "Securely share a link to this list.",
   "copy-link": "Copy Link to share",
-  "copy-link-tile": "Copy link to share with others"
+  "copy-link-tile": "Copy link to share with others",
+  "pickupTime_early": "Early",
+  "pickupTime_medium": "Mid",
+  "pickupTime_late": "Late",
+  "rejig_description": "The list is unsorted and each supermarket is divided differently. While shopping you can change the order of your list and move the items accordingly - depending on where they can be found in the supermarket: next, a little later or at the very end on your way through the shelves 🛒😀"
 }
