@@ -1,4 +1,3 @@
-import { ButtonPrimary } from "@/components/Button";
 import TextShadow from "@/components/TextShadow";
 import Typography from "@/components/Typography";
 import { useTranslations } from "next-intl";
@@ -17,3 +16,5 @@ export default function Index() {
     </Typography>
   );
 }
+
+export const runtime = "edge";
