@@ -16,5 +16,3 @@ export default function Index() {
     </Typography>
   );
 }
-
-export const runtime = "edge";

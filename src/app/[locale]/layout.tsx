@@ -10,7 +10,8 @@ import packageJson from "../../../package.json";
 import { locales } from "@/i18n/locales";
 import { notFound } from "next/navigation";
 import Head from "./Head";
-import { Spinner } from "@/components/Spinner";
+
+export const runtime = "edge";
 
 export default function LocaleLayout({
   children,
