@@ -22,6 +22,19 @@ module.exports = withPWA(
       env: {
         npm_package_version: process.env.npm_package_version,
       },
+      async headers() {
+        return [
+          {
+            source: "/",
+            headers: [
+              {
+                key: "Cache-Control",
+                value: "max-age=0, s-maxage=86400",
+              },
+            ],
+          },
+        ];
+      },
     }),
   ),
 );
