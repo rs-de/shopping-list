@@ -11,8 +11,6 @@ import { locales } from "@/i18n/locales";
 import { notFound } from "next/navigation";
 import Head from "./Head";
 
-export const runtime = "edge";
-
 export default function LocaleLayout({
   children,
   params: { locale },

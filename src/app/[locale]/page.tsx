@@ -3,6 +3,8 @@ import Typography from "@/components/Typography";
 import { useTranslations } from "next-intl";
 import ShoppingListMenu from "./ShoppingListMenu";
 
+export const runtime = "edge";
+
 export default function Index() {
   const t = useTranslations();
   return (
