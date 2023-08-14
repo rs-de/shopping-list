@@ -2,6 +2,7 @@ import {
   NextIntlClientProvider,
   createTranslator,
   useMessages,
+  useTranslations,
 } from "next-intl";
 import { ReactNode } from "react";
 import Navbar from "./Navbar";
@@ -22,6 +23,7 @@ export default function LocaleLayout({
     notFound();
   }
   const messages = useMessages();
+  const t = useTranslations();
   return (
     <html lang={locale}>
       <Head />
@@ -31,11 +33,12 @@ export default function LocaleLayout({
           <main className="flex-1 flex flex-col items-center bg-primary-1 bg-blend-exclusion dark:bg-blend-normal bg-one bg-cover bg-center bg-fixed bg-no-repeat">
             {children}
           </main>
-          <footer className="flex justify-between bg-slate-2 text-slate-11 text-sm px-4 py-2">
+          <footer className="flex flex-wrap justify-between bg-slate-2 text-slate-11 text-sm px-4 py-2">
             <div className="whitespace-nowrap">
               &copy;{new Date().getFullYear()} Dipl.-Math. (FH) Jochen Probst
             </div>
-            <div className="whitespace-nowrap">
+            <div className="whitespace-nowrap flex gap-2">
+              <Link href={"/about"}>{t("about")}</Link>|
               <Link href={"/changelog"}>v{packageJson.version}&nbsp;</Link>
             </div>
           </footer>
