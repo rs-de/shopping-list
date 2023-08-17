@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.5.1 2023-08-17
+
+- Add about page, linked in footer
+- Add privacy and imprint page, linked in footer
+- Add link to github repository in footer
+
 ## 1.4.0 2023-08-12
 
 - Enable snappy page transitions

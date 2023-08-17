@@ -18,5 +18,7 @@
   "pickupTime_late": "Late",
   "rejig_description": "The list is unsorted and each supermarket is divided differently. While shopping you can change the order of your list and move the items accordingly - depending on where they can be found in the supermarket: next, a little later or at the very end on your way through the shelves 🛒😀",
   "about": "About",
-  "view_on_github": "View on Github"
+  "view_on_github": "View on Github",
+  "imprint": "Imprint",
+  "privacy": "Privacy"
 }

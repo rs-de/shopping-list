@@ -39,6 +39,14 @@ export default function LocaleLayout({
             </div>
             <div className="whitespace-nowrap flex gap-2">
               <Link href={"/about"}>{t("about")}</Link>|
+              <Link href={"https://www.rushsoft.de/privacy"}>
+                {t("privacy")}
+              </Link>
+              |
+              <Link href={"https://www.rushsoft.de/imprint"}>
+                {t("imprint")}
+              </Link>
+              |
               <Link
                 href="https://github.com/rs-de/shopping-list"
                 title={t("view_on_github")}
