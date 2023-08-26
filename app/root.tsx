@@ -92,6 +92,10 @@ export default function App() {
         <PWAHead />
         <Meta />
         <Links />
+        <meta
+          name="format-detection"
+          content="telephone=no, date=no, email=no, address=no"
+        />
       </head>
       <body className="box-border min-h-screen bg-primary-1 flex flex-col justify-between">
         <SnackbarProvider preventDuplicate={true}>
