@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.0 2023-08-26
+
+- added optimistic updates of all mutations
+- migrated to Remix (from Next.js)
+
 ## 1.5.1 2023-08-17
 
 - Add about page, linked in footer
