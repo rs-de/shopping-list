@@ -22,7 +22,10 @@ export const meta: V2_MetaFunction = ({ params: { _id }, matches }) => {
     //@ts-ignore ts(2339)
     .flatMap((match) => match.meta ?? [])
     .filter((meta) => !("manifest" in meta));
-  return [{ name: "manifest", content: `/${_id}/manifest` }, ...parentMeta];
+  return [
+    { tagName: "link", rel: "manifest", href: `/${_id}/manifest` },
+    ...parentMeta,
+  ];
 };
 
 function Shoppinglist() {
