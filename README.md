@@ -2,19 +2,62 @@
 
 This little application has been developed in order to learn and review some technologies and frameworks.
 
-- Next.js / React server actions (experimental)
+- Remix ( before Next.js with experimental React server actions )
 - tailwindcss
 - Mongoose / [MongoDB Atlas](https://www.mongodb.com)
 - [Vercel](https://vercel.com) for hosting
 
-## development
+## Development
 
-```bash
+From your terminal:
+
+```sh
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This starts your app in development mode, rebuilding assets on file changes.
 
-## References
+## Deployment
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) and cleaned up by [setup-nextjs-00]()
+First, build your app for production:
+
+```sh
+npm run build
+```
+
+Then run the app in production mode:
+
+```sh
+npm start
+```
+
+Now you'll need to pick a host to deploy it to.
+
+### DIY
+
+If you're familiar with deploying node applications, the built-in Remix app server is production-ready.
+
+Make sure to deploy the output of `remix build`
+
+- `build/`
+- `public/build/`
+
+### Using a Template
+
+When you ran `npx create-remix@latest` there were a few choices for hosting. You can run that again to create a new project, then copy over relevant code/assets from your current app to the new project that's pre-configured for your target server.
+
+Most importantly, this means everything in the `app/` directory, but if you've further customized your current application outside of there it may also include:
+
+- Any assets you've added/updated in `public/`
+- Any updated versions of root files such as `.eslintrc.js`, etc.
+
+```sh
+cd ..
+# create a new project, and pick a pre-configured host
+npx create-remix@latest
+cd my-new-remix-app
+# remove the new project's app (not the old one!)
+rm -rf app
+# copy your app over
+cp -R ../my-old-remix-app/app app
+```
