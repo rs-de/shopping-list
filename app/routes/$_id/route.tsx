@@ -30,10 +30,11 @@ export const meta: V2_MetaFunction = ({ params: { _id }, matches }) => {
 
 function Shoppinglist() {
   const { _id = "" } = useParams();
-  const { data: shoppingList } = api.useGetShoppingListQuery(
-    { _id },
-    { skip: !_id },
-  );
+  const {
+    data: shoppingList,
+    isError,
+    isLoading,
+  } = api.useGetShoppingListQuery({ _id }, { skip: !_id });
   const [patchShoppingList] = api.usePatchShoppingListMutation();
   const { t } = useTranslation();
   const listId = shoppingList?._id;
@@ -62,22 +63,22 @@ function Shoppinglist() {
 
   const [autoFocus, setAutoFocus] = React.useState<string>("new");
 
-  if (!listId) {
+  if (isError) {
     return (
       <Typography className="flex-1 flex flex-col items-center p-4">
         <div className="border border-yellow-8 rounded-lg p-2 bg-yellow-4 mb-4">
           {t("service_error")}
         </div>
-        <form action="#">
-          <ButtonPrimary type="submit" formMethod="GET">
-            {t("reload")}
-          </ButtonPrimary>
+        <form action="#" method="get">
+          <ButtonPrimary type="submit">{t("reload")}</ButtonPrimary>
         </form>
       </Typography>
     );
   }
 
-  return (
+  return isLoading || !shoppingList || !listId ? (
+    <Spinner />
+  ) : (
     <Typography className="flex-1 flex flex-col items-center p-4">
       <TextShadow>
         <h1 className="text-primary-11">{t("shoppinglist-articles")}</h1>

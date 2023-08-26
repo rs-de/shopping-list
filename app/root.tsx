@@ -98,17 +98,19 @@ export default function App() {
         />
       </head>
       <body className="box-border min-h-screen bg-primary-1 flex flex-col justify-between">
-        <SnackbarProvider preventDuplicate={true}>
-          <Navbar />
-          <main className="flex-1 flex flex-col items-center bg-primary-1 bg-blend-exclusion dark:bg-blend-normal bg-one bg-cover bg-center bg-fixed bg-no-repeat">
-            <ReactErrorBoundary fallback={<ErrorBoundary />}>
-              <Suspense fallback={<Spinner />}>
-                <Outlet />
-              </Suspense>
-            </ReactErrorBoundary>
-          </main>
-          <Footer />
-        </SnackbarProvider>
+        <Suspense fallback={<Spinner />}>
+          <SnackbarProvider preventDuplicate={true}>
+            <Navbar />
+            <main className="flex-1 flex flex-col items-center bg-primary-1 bg-blend-exclusion dark:bg-blend-normal bg-one bg-cover bg-center bg-fixed bg-no-repeat">
+              <ReactErrorBoundary fallback={<ErrorBoundary />}>
+                <Suspense fallback={<Spinner />}>
+                  <Outlet />
+                </Suspense>
+              </ReactErrorBoundary>
+            </main>
+            <Footer />
+          </SnackbarProvider>
+        </Suspense>
         <ScrollRestoration nonce={cspScriptNonce} />
         <Scripts nonce={cspScriptNonce} />
         <LiveReload nonce={cspScriptNonce} />
