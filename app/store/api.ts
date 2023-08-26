@@ -10,9 +10,6 @@ const baseQuery = fetchBaseQuery({
   headers: { accept: "application/json" },
 });
 
-//Beware remix specific "_data" and "index" params to get data from "loader"
-//They are required to access the action and loader funcs without getting
-//the page html back
 export const api = createApi({
   baseQuery,
   refetchOnFocus: true,
@@ -20,23 +17,20 @@ export const api = createApi({
   endpoints: (builder) => ({
     postShoppingList: builder.mutation<ShoppingList, void>({
       query: () => ({
-        url: `/`,
+        url: ``,
         method: "POST",
-        params: { index: "", _data: `routes${baseUrl}` },
       }),
       invalidatesTags: [{ type: "ShoppingList", id: "LISTS" }],
     }),
     getShoppingList: builder.query<ShoppingList | null, { _id: string }>({
       query: ({ _id }) => ({
         url: `/${encodeURIComponent(_id)}`,
-        params: { _data: `routes${baseUrl}.$_id` },
       }),
       providesTags: (_, __, { _id }) => [{ type: "ShoppingList", id: _id }],
     }),
     patchShoppingList: builder.mutation<ShoppingList, FormData>({
       query: (formData) => ({
         url: `/${encodeURIComponent(String(formData.get("_id")))}`,
-        params: { _data: `routes${baseUrl}.$_id` },
         method: "PATCH",
         body: formData,
         formData: true,
@@ -70,7 +64,6 @@ export const api = createApi({
     deleteShoppingList: builder.mutation<void, { _id: string }>({
       query: ({ _id }) => ({
         url: `/${encodeURIComponent(_id)}`,
-        params: { _data: `routes${baseUrl}.$_id` },
         method: "DELETE",
       }),
       invalidatesTags: (result, error, { _id }) => [
@@ -80,7 +73,6 @@ export const api = createApi({
     patchArticle: builder.mutation<Article, FormData>({
       query: (formData) => ({
         url: `/article/${encodeURIComponent(String(formData.get("_id")))}}`,
-        params: { _data: `routes${baseUrl}/article.$_id` },
         method: "PATCH",
         body: formData,
         formData: true,
@@ -92,7 +84,6 @@ export const api = createApi({
     >({
       query: ({ listId }) => ({
         url: `/${encodeURIComponent(listId)}/versions`,
-        params: { _data: `routes${baseUrl}.$_id.versions` },
       }),
     }),
   }),
