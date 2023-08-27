@@ -4,12 +4,16 @@ import { Response } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
 import isbot from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
+import type { BackendModule } from "i18next";
 import { createInstance } from "i18next";
+
 import i18next from "./i18next.server";
 import { I18nextProvider, initReactI18next } from "react-i18next";
-import Backend from "i18next-fs-backend";
 import i18n from "./i18n"; // your i18n configuration file
 import { resolve } from "node:path";
+import resourcesToBackend from "i18next-resources-to-backend";
+import FileSystemBackend from "i18next-fs-backend";
+
 import { getContentSecurityPolicy } from "./utils/getContentSecurityPolicy";
 
 const ABORT_DELAY = 5000;
@@ -28,9 +32,26 @@ export default async function handleRequest(
   let lng = await i18next.getLocale(request);
   let ns = i18next.getRouteNamespaces(remixContext);
 
+  const ResourceBackend = resourcesToBackend(
+    (language, namespace, callback) => {
+      const path = `../public/locales/${language}/${namespace}.json`;
+      try {
+        const resource = require(path);
+        callback(null, resource);
+      } catch (error) {
+        console.error("Loading server locale failed", error);
+        callback(new Error(`Could not locale at ${path}`), null);
+      }
+    },
+  );
+
   await instance
     .use(initReactI18next)
-    .use(Backend)
+    .use<FileSystemBackend | BackendModule<object>>(
+      process.env.NODE_ENV === "development"
+        ? FileSystemBackend
+        : ResourceBackend,
+    )
     .init({
       ...i18n, // spread the configuration
       lng, // The locale we detected above
