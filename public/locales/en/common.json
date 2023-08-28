@@ -8,7 +8,7 @@
   "input_article_to_add": "Input article to add",
   "delete_selected_articles": "Delete selected articles",
   "show-my-list": "Show my list",
-  "service_error": "The List could not be loaded.",
+  "service_error": "An error occurred while loading the data. Please try again in a few seconds. If the problem persists, please contact us.",
   "reload": "Retry",
   "share": "Share this list",
   "share-text": "Securely share a link to this list.",

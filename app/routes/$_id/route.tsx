@@ -34,6 +34,7 @@ function Shoppinglist() {
     data: shoppingList,
     isError,
     isLoading,
+    refetch,
   } = api.useGetShoppingListQuery({ _id }, { skip: !_id });
   const [patchShoppingList] = api.usePatchShoppingListMutation();
   const { t } = useTranslation();
@@ -69,9 +70,9 @@ function Shoppinglist() {
         <div className="border border-yellow-8 rounded-lg p-2 bg-yellow-4 mb-4">
           {t("service_error")}
         </div>
-        <form action="#" method="get">
-          <ButtonPrimary type="submit">{t("reload")}</ButtonPrimary>
-        </form>
+        <ButtonPrimary type="button" onClick={() => refetch()}>
+          {t("reload")}
+        </ButtonPrimary>
       </Typography>
     );
   }

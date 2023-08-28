@@ -8,7 +8,7 @@
   "input_article_to_add": "Artikel hinzufügen",
   "delete_selected_articles": "Ausgewählte Artikel löschen",
   "show-my-list": "Meine Liste",
-  "service_error": "Die Liste konnte nicht geladen werden.",
+  "service_error": "Beim Laden der Daten ist ein Fehler aufgetreten. Bitte versuchen Sie es in ein paar Sekunden noch einmal. Wenn das Problem weiterhin besteht, kontaktiere uns bitte.",
   "reload": "Nochmal versuchen",
   "share": "Mit anderen teilen",
   "share-text": "Teile den Link zu dieser Einkaufsliste mit anderen. Der Link ist weltweit eindeutig und lässt sich nicht erraten.",
