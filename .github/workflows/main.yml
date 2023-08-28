@@ -48,6 +48,7 @@ jobs:
         env:
           MONGO_URI: mongodb://localhost:27017
           PORT: 8811
+          CYPRESS_BASE_URL: http://localhost:8811
         with:
           start: npm start
           wait-on: http://localhost:8811
