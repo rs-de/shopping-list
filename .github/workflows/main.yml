@@ -9,22 +9,6 @@ on:
 jobs:
   install:
     runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Cypress install
-        uses: cypress-io/github-action@v6
-        with:
-          install-command: npm ci
-          runTests: false
-          build: npm run build
-
-      - name: Save build folder
-        uses: actions/upload-artifact@v3
-        with:
-          name: build
-          if-no-files-found: error
-          path: build
   cypress-run:
     runs-on: ubuntu-22.04
     needs: install
@@ -37,12 +21,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Download the build folder
-        uses: actions/download-artifact@v3
-        with:
-          name: build
-          path: build
-
       - name: Cypress run
         uses: cypress-io/github-action@v6
         env:
@@ -50,6 +28,8 @@ jobs:
           PORT: 8811
           CYPRESS_BASE_URL: http://localhost:8811
         with:
+          install-command: npm ci
+          build: npm run build
           start: npm start
           wait-on: http://localhost:8811
           browser: firefox
