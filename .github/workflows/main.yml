@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Cypress install
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           install-command: npm ci
           runTests: false
@@ -24,7 +24,7 @@ jobs:
         with:
           name: build
           if-no-files-found: error
-          path: public
+          path: build
   cypress-run:
     runs-on: ubuntu-22.04
     needs: install
@@ -36,10 +36,13 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build
-          path: public
+          path: build
 
       - name: Cypress run
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           start: npm start
+          wait-on: http://localhost:8811
           browser: firefox
+        env:
+          PORT: 8811
