@@ -36,16 +36,16 @@ function ShoppingListMenu() {
           try {
             e.preventDefault();
             let { _id } = await createShoppinglist().unwrap();
-            invariant(_id, "id is null");
+            invariant(Boolean(_id), "id is falsy");
             navigate(`/${_id}`);
             enqueueSnackbar(t("createShoppinglistSucceeded"));
           } catch (error) {
-            if (isFetchBaseQueryError(error)) {
+            if (isFetchBaseQueryError(error) && error.status === 429) {
               enqueueSnackbar(t("createShoppinglistRateLimitError"), {
                 variant: "warning",
               });
             } else {
-              console.error(error);
+              console.warn(error);
               enqueueSnackbar(t("createShoppinglistError"), {
                 variant: "error",
               });

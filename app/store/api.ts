@@ -130,7 +130,7 @@ export function patchShoppingList({ shoppingList, formData }: PatchArg) {
       shoppingList.articles.push({
         text: String(formData.get("new")),
         //dummy id, will be replaced by PATCH response
-        _id: crypto.randomUUID(),
+        _id: crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(),
       });
     }
     default:

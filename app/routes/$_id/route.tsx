@@ -16,6 +16,7 @@ import ButtonShare from "~/components/ButtonShare";
 import Rejig from "./Rejig";
 import { getFormData } from "~/utils/getFormData";
 import type { V2_MetaFunction } from "@remix-run/node";
+import { enqueueSnackbar } from "notistack";
 
 export const meta: V2_MetaFunction = ({ params: { _id }, matches }) => {
   const parentMeta = matches
@@ -89,16 +90,20 @@ function Shoppinglist() {
           method="post"
           id="text"
           className="w-full bg-primary-2/80 p-2 rounded-xl"
-          onSubmit={(e) => {
-            e.preventDefault();
-            let formData = getFormData(e);
-            if (
-              formData.get("_action") === "addArticle" &&
-              !formData.get("new")
-            ) {
-              return;
+          onSubmit={async (e) => {
+            try {
+              e.preventDefault();
+              let formData = getFormData(e);
+              if (
+                formData.get("_action") === "addArticle" &&
+                !formData.get("new")
+              ) {
+                return;
+              }
+              await patchShoppingList(formData).unwrap();
+            } catch (error) {
+              enqueueSnackbar(t("service_error"), { variant: "warning" });
             }
-            patchShoppingList(formData);
           }}
         >
           <input type="hidden" name="_id" value={listId} />
