@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { LOCAL_STORAGE_KEY } from "../../constants";
-import { api } from "~/store/api";
+import { api, isFetchBaseQueryError } from "~/store/api";
 import { useSnackbar } from "notistack";
 import { ClientOnly } from "remix-utils";
 import { Spinner } from "~/components/Spinner";
@@ -40,8 +40,16 @@ function ShoppingListMenu() {
             navigate(`/${_id}`);
             enqueueSnackbar(t("createShoppinglistSucceeded"));
           } catch (error) {
-            console.error(error);
-            enqueueSnackbar(t("createShoppinglistError"), { variant: "error" });
+            if (isFetchBaseQueryError(error)) {
+              enqueueSnackbar(t("createShoppinglistRateLimitError"), {
+                variant: "warning",
+              });
+            } else {
+              console.error(error);
+              enqueueSnackbar(t("createShoppinglistError"), {
+                variant: "error",
+              });
+            }
           }
         }}
       >

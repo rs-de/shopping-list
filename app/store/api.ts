@@ -4,6 +4,8 @@ import { moveArticles } from "~/utils/moveArticles";
 import type { Article, ShoppingList } from "~/services/shoppinglist";
 import { isArrayOfString } from "~/utils/isArrayOfString";
 
+import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+
 const baseUrl = "/api";
 const baseQuery = fetchBaseQuery({
   baseUrl,
@@ -140,3 +142,9 @@ export type PatchArg = {
   shoppingList: ShoppingList;
   formData: FormData;
 };
+
+export function isFetchBaseQueryError(
+  error: any,
+): error is FetchBaseQueryError {
+  return Boolean(error?.status);
+}

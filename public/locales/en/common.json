@@ -23,5 +23,6 @@
   "imprint": "Imprint",
   "privacy": "Privacy",
   "page-title": "Free shopping list web app",
-  "page-description": "Free, simple and secure shopping list web app, shareable with others and without registration."
+  "page-description": "Free, simple and secure shopping list web app, shareable with others and without registration.",
+  "createShoppinglistRateLimitError": "There are too many shopping lists created at the moment. Please try again in a few seconds."
 }

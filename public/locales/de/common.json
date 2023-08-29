@@ -23,5 +23,6 @@
   "imprint": "Impressum",
   "privacy": "Datenschutz",
   "page-title": "Super einfache Einkaufslisten App",
-  "page-description": "Super einfache Einkaufslisten App, kostenlos, mit anderen teilbar und ohne Registrierung."
+  "page-description": "Super einfache Einkaufslisten App, kostenlos, mit anderen teilbar und ohne Registrierung.",
+  "createShoppinglistRateLimitError": "Es werden gerade zu viele Listen erstellt. Bitte versuche es in ein paar Sekunden noch einmal."
 }

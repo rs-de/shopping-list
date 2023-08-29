@@ -26,7 +26,7 @@ export async function action({ request }: ActionArgs) {
         if (isRateLimitError(error)) {
           console.error(error);
           return new Response(null, {
-            status: 303,
+            status: 429,
             headers: {
               location: new URL(`/`, request.url).toString(),
               ...(isRateLimitError(error) && rateLimitToHeaders(error)),
