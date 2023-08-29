@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.1 2023-08-29
+
+- Minor SEO
+- Add some handling of potential service errors
+
 ## 1.6.0 2023-08-26
 
 - added optimistic updates of all mutations
