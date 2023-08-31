@@ -3,7 +3,6 @@ import invariant from "tiny-invariant";
 import { moveArticles } from "~/utils/moveArticles";
 import type { Article, ShoppingList } from "~/services/shoppinglist";
 import { isArrayOfString } from "~/utils/isArrayOfString";
-
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 const baseUrl = "/api";
@@ -43,14 +42,12 @@ export const api = createApi({
         //optimistic update
         patchResult = dispatch(
           api.util.updateQueryData("getShoppingList", { _id }, (draft) => {
-            console.log(Object.fromEntries(formData));
             draft && patchShoppingList({ shoppingList: draft, formData });
           }),
         );
         //use the updated resource, to update the state
         queryFulfilled
           .then(({ data }) => {
-            console.log("from service", data);
             data &&
               dispatch(
                 api.util.updateQueryData(
@@ -74,7 +71,7 @@ export const api = createApi({
     }),
     patchArticle: builder.mutation<Article, FormData>({
       query: (formData) => ({
-        url: `/article/${encodeURIComponent(String(formData.get("_id")))}}`,
+        url: `/${encodeURIComponent(String(formData.get("_id")))}}`,
         method: "PATCH",
         body: formData,
         formData: true,
@@ -98,18 +95,19 @@ export function patchArticle({ shoppingList, formData }: PatchArg) {
     "article text is required",
   );
   shoppingList.articles.every((article) =>
-    article._id?.toString() === String(formData.get("_id"))
+    article.id === String(formData.get("_id"))
       ? (article.text = String(formData.get("text"))) && false
       : false,
   );
   return shoppingList;
 }
 
+//optimistic updates on draft shoppingList
 export function patchShoppingList({ shoppingList, formData }: PatchArg) {
   switch (formData.get("_action")) {
     case "deleteArticles": {
       return (shoppingList.articles = shoppingList.articles.filter(
-        (article) => !formData.getAll("selected").includes(article._id ?? ""),
+        (article) => !formData.getAll("selected").includes(article.id ?? ""),
       ));
     }
     case "rejig": {
@@ -129,9 +127,20 @@ export function patchShoppingList({ shoppingList, formData }: PatchArg) {
     case "addArticle": {
       shoppingList.articles.push({
         text: String(formData.get("new")),
-        //dummy id, will be replaced by PATCH response
-        _id: crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(),
+        id: String(formData.get("id")),
       });
+      return;
+    }
+    case "changeArticle": {
+      let article: Article | undefined = shoppingList.articles.find(
+        (article) => article.id === formData.get("id"),
+      );
+      if (article) article.text = String(formData.get("text"));
+      return;
+    }
+    case "clearList": {
+      shoppingList.articles = [];
+      return;
     }
     default:
       return;

@@ -2,7 +2,13 @@ import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { ShoppingList } from "~/services/shoppinglist";
 import { ShoppingListModel } from "~/services/shoppinglist";
-import { addArticle, deleteArticles, rejigArticles } from "./actions";
+import {
+  addArticle,
+  changeArticle,
+  deleteArticles,
+  rejigArticles,
+  clearList,
+} from "./actions";
 
 export async function loader({ params }: LoaderArgs) {
   try {
@@ -22,11 +28,17 @@ export async function action({ request }: LoaderArgs) {
         case "addArticle": {
           return await addArticle(formData);
         }
+        case "changeArticle": {
+          return await changeArticle(formData);
+        }
         case "deleteArticles": {
           return await deleteArticles(formData);
         }
         case "rejig": {
           return await rejigArticles(formData);
+        }
+        case "clearList": {
+          return await clearList(formData);
         }
         default: {
           throw new Response(null, {

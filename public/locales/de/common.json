@@ -25,5 +25,7 @@
   "page-title": "Super einfache Einkaufslisten App",
   "page-description": "Super einfache Einkaufslisten App, kostenlos, mit anderen teilbar und ohne Registrierung.",
   "createShoppinglistRateLimitError": "Es werden gerade zu viele Listen erstellt. Bitte versuche es in ein paar Sekunden noch einmal.",
-  "createShoppinglistError": "Beim Erstellen der Liste ist ein Fehler aufgetreten. Bitte versuche es in einer Minute noch einmal. Wenn das Problem weiterhin besteht, kontaktiere uns bitte."
+  "createShoppinglistError": "Beim Erstellen der Liste ist ein Fehler aufgetreten. Bitte versuche es in einer Minute noch einmal. Wenn das Problem weiterhin besteht, kontaktiere uns bitte.",
+  "clearList": "Liste leeren",
+  "clearList-confirm": "Möchtest du die Liste wirklich leeren?"
 }

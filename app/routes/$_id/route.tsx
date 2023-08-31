@@ -2,7 +2,7 @@ import { Form, useNavigate, useParams } from "@remix-run/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ClientOnly } from "remix-utils";
-import { ButtonPrimary } from "~/components/Button";
+import { ButtonPrimary, ButtonSecondary } from "~/components/Button";
 import { Spinner } from "~/components/Spinner";
 import TextShadow from "~/components/TextShadow";
 import Typography from "~/components/Typography";
@@ -17,6 +17,8 @@ import Rejig from "./Rejig";
 import { getFormData } from "~/utils/getFormData";
 import type { V2_MetaFunction } from "@remix-run/node";
 import { enqueueSnackbar } from "notistack";
+import { nanoid } from "nanoid";
+import { useClearList } from "./ClearList/useClearList";
 
 export const meta: V2_MetaFunction = ({ params: { _id }, matches }) => {
   const parentMeta = matches
@@ -34,7 +36,6 @@ function Shoppinglist() {
   const {
     data: shoppingList,
     isError,
-    isLoading,
     refetch,
   } = api.useGetShoppingListQuery({ _id }, { skip: !_id });
   const [patchShoppingList] = api.usePatchShoppingListMutation();
@@ -45,6 +46,7 @@ function Shoppinglist() {
   const showRejig =
     checked.size > 0 && (shoppingList?.articles.length ?? 0) > 5;
   const navigate = useNavigate();
+  const { clearList, dialog } = useClearList({ _id });
 
   //save list id to local storage
   React.useEffect(() => {
@@ -78,40 +80,21 @@ function Shoppinglist() {
     );
   }
 
-  return isLoading || !shoppingList || !listId ? (
+  return !shoppingList || !listId ? (
     <Spinner />
   ) : (
     <Typography className="flex-1 flex flex-col items-center p-4">
+      {dialog}
       <TextShadow>
         <h1 className="text-primary-11">{t("shoppinglist-articles")}</h1>
       </TextShadow>
       <RejigContextProvider>
-        <form
-          method="post"
-          id="text"
-          className="w-full bg-primary-2/80 p-2 rounded-xl"
-          onSubmit={async (e) => {
-            try {
-              e.preventDefault();
-              let formData = getFormData(e);
-              if (
-                formData.get("_action") === "addArticle" &&
-                !formData.get("new")
-              ) {
-                return;
-              }
-              await patchShoppingList(formData).unwrap();
-            } catch (error) {
-              enqueueSnackbar(t("service_error"), { variant: "warning" });
-            }
-          }}
-        >
-          <input type="hidden" name="_id" value={listId} />
+        <div className="w-full bg-primary-2/80 p-2 rounded-xl">
           <div className="w-full grid grid-cols-[1fr_50px] gap-1 [overflow-anchor:none]">
             {shoppingList.articles.map((article, index) => (
-              <React.Fragment key={article._id}>
+              <React.Fragment key={article.id}>
                 <InputArticle
-                  id={article._id}
+                  id={article.id}
                   name={"text"}
                   defaultValue={article.text}
                   className="flex-1"
@@ -124,7 +107,7 @@ function Shoppinglist() {
                   <input
                     type="checkbox"
                     name="selected"
-                    value={article._id}
+                    value={article.id}
                     className="mt-[0.05rem]"
                     form="article-selection"
                     onChange={(e) => {
@@ -135,7 +118,7 @@ function Shoppinglist() {
                         setChecked(new Set(checked));
                       }
                     }}
-                    checked={checked.has(article._id)}
+                    checked={checked.has(article.id)}
                     aria-label="Delete article"
                     onClick={() => setAutoFocus(`selected-${index}`)}
                     autoFocus={autoFocus === `selected-${index}`}
@@ -171,30 +154,63 @@ function Shoppinglist() {
               )}
             </Popover>
           </div>
-          <div className="mt-2 w-full flex items-center">
-            <Plus />
-            <InputArticle
-              className="flex-1"
-              name={"new"}
-              key={shoppingList.articles.length}
-              aria-label={t("input_article_to_add")}
-              listId={listId}
-              autoFocus={autoFocus === "new"}
-              onFocus={() => setAutoFocus("new")}
-            />
-          </div>
-          <div className="w-full mt-2 flex gap-2">
-            <ButtonShare />
-            <ButtonPrimary
-              type="submit"
-              name="_action"
-              value="addArticle"
-              className="flex-1"
-            >
-              {t("Add")}
-            </ButtonPrimary>
-          </div>
-        </form>
+          <form
+            method="post"
+            id="text"
+            onSubmit={async (e) => {
+              try {
+                e.preventDefault();
+                let formData = getFormData(e);
+                if (
+                  formData.get("_action") === "addArticle" &&
+                  !formData.get("new")
+                ) {
+                  return;
+                }
+                await patchShoppingList(formData).unwrap();
+              } catch (error) {
+                enqueueSnackbar(t("service_error"), { variant: "warning" });
+              }
+            }}
+          >
+            <input type="hidden" name="_id" value={listId} />
+            <input type="hidden" name="id" value={nanoid(6)} />
+            <div className="mt-2 w-full flex items-center">
+              <Plus />
+              <InputArticle
+                className="flex-1"
+                name={"new"}
+                key={shoppingList.articles.length}
+                aria-label={t("input_article_to_add")}
+                listId={listId}
+                autoFocus={autoFocus === "new"}
+                onFocus={() => setAutoFocus("new")}
+              />
+            </div>
+            <div className="w-full mt-2 flex gap-2">
+              <ButtonPrimary
+                type="submit"
+                name="_action"
+                value="addArticle"
+                className="flex-1"
+              >
+                {t("Add")}
+              </ButtonPrimary>
+              <ButtonSecondary
+                type="submit"
+                name="_action"
+                value="clearList"
+                onClick={(e) => {
+                  e.preventDefault();
+                  clearList({ _id });
+                }}
+              >
+                {t("clearList")}
+              </ButtonSecondary>
+              <ButtonShare />
+            </div>
+          </form>
+        </div>
       </RejigContextProvider>
       <Popover className="w-full">
         {() => (

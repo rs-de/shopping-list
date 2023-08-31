@@ -5,17 +5,21 @@ import { json } from "@remix-run/node";
 import { isArrayOfString } from "~/utils/isArrayOfString";
 
 export async function addArticle(form: FormData) {
-  if (!form.has("_id")) {
+  const { _id, id, new: _new } = Object.fromEntries(form);
+  if (!_id) {
     throw new Response(null, { status: 400, statusText: "no _id" });
   }
-  if (!form.has("new")) {
+  if (!id) {
+    throw new Response(null, { status: 400, statusText: "no article id" });
+  }
+  if (!_new) {
     throw new Response(null, { status: 400, statusText: "no new text" });
   }
 
   let sl = await ShoppingListModel.findByIdAndUpdate(
-    form.get("_id"),
+    _id,
     {
-      $push: { articles: { text: form.get("new")?.toString().trim() } },
+      $push: { articles: { id, text: String(_new).trim() } },
     },
     { new: true },
   ).exec();
@@ -29,6 +33,21 @@ export async function addArticle(form: FormData) {
   return json(sl.toObject());
 }
 
+export async function changeArticle(form: FormData) {
+  if (!form.has("_id")) {
+    throw new Response(null, { status: 400, statusText: "no _id" });
+  }
+  if (!form.has("id")) {
+    throw new Response(null, { status: 400, statusText: "no article id" });
+  }
+  let sl = await ShoppingListModel.findOneAndUpdate(
+    { _id: form.get("_id"), "articles.id": form.get("id") },
+    { $set: { "articles.$.text": form.get("text") } },
+    { new: true },
+  ).exec();
+  return json(sl.toObject());
+}
+
 export async function deleteArticles(form: FormData) {
   let idsToDelete = form.getAll("selected");
   if (!isArrayOfString(idsToDelete)) {
@@ -39,7 +58,7 @@ export async function deleteArticles(form: FormData) {
   }
 
   await ShoppingListModel.findByIdAndUpdate(form.get("_id"), {
-    $pull: { articles: { _id: { $in: idsToDelete } } },
+    $pull: { articles: { id: { $in: idsToDelete } } },
   }).exec();
 
   if (idsToDelete.length > 0) {
@@ -82,9 +101,22 @@ export async function rejigArticles(form: FormData) {
     articles: sl.articles,
   });
 
-  return (await ShoppingListModel.findOneAndUpdate(
-    { _id },
+  return (await ShoppingListModel.findByIdAndUpdate(
+    _id,
     { $set: { articles: rejiggedArticles } },
     { new: true },
   ).exec()) as ShoppingListDocument | null;
+}
+
+export async function clearList(form: FormData) {
+  let _id = form.get("_id");
+  if (!_id) {
+    throw new Response(null, { status: 400, statusText: "no _id" });
+  }
+  let sl = await ShoppingListModel.findByIdAndUpdate(
+    _id,
+    { $set: { articles: [] } },
+    { new: true },
+  ).exec();
+  return json(sl.toObject());
 }

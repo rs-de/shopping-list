@@ -3,6 +3,7 @@
 import type { ComponentProps } from "react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { ButtonSecondary } from "./Button";
 
 export default function ButtonShare(props: ComponentProps<"button">) {
   const { t } = useTranslation();
@@ -13,9 +14,9 @@ export default function ButtonShare(props: ComponentProps<"button">) {
   }, []);
 
   return (
-    <button
+    <ButtonSecondary
       type="button"
-      className="group flex justify-center items-center border border-slate-8 hover:border-slate-9 bg-primary-2 p-1 text-sm text-slate-11 hover:text-slate-12 rounded-lg"
+      className="group flex justify-center items-center"
       onClick={async (e) => {
         const url = String(
           document.querySelector('link[rel="canonical"]') ||
@@ -60,7 +61,7 @@ export default function ButtonShare(props: ComponentProps<"button">) {
         </g>
       </svg>
       {hasShare ? t("share") : t("copy-link")}
-    </button>
+    </ButtonSecondary>
   );
 }
 

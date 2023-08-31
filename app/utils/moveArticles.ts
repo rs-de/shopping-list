@@ -14,11 +14,9 @@ export function moveArticles({
   const filteredArticles = articles.filter(
     //_id can be a Object, so we must call toString()
     // Issue originates in week mongoose TypeScript support
-    ({ _id }) => !idsToRejig.includes(_id!.toString()),
+    ({ id }) => !idsToRejig.includes(id),
   );
-  const articlesToRejig = articles.filter(({ _id }) =>
-    idsToRejig.includes(_id!.toString()),
-  );
+  const articlesToRejig = articles.filter(({ id }) => idsToRejig.includes(id));
   const articleCount = articles.length;
   //startIndex >= 0
   const startIndex = Math.max(

@@ -20,7 +20,7 @@ export default function Button(props: ButtonProps) {
 export const ButtonSecondary = ({ className = "", ...props }: ButtonProps) => (
   <Button
     {...props}
-    className={`font-bold text-slate-11 border-2 border-slate-8 hover:border-slate-9 ${className}`}
+    className={`border border-slate-8 hover:border-slate-9 bg-primary-2 p-1 text-sm text-slate-11 hover:text-slate-12 rounded-lg ${className}`}
   >
     {props.children}
   </Button>

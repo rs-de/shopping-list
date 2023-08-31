@@ -20,9 +20,9 @@ export default function InputArticle({
 
         const formData = new FormData();
         formData.append("_action", "changeArticle");
-        formData.append("_id", id);
+        formData.append("_id", listId);
         formData.append("text", e.target.value);
-        formData.append("listId", listId);
+        formData.append("id", id);
         await changeText(formData).unwrap();
       },
       [changeText, id, listId, name],
