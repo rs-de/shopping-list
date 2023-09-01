@@ -66,6 +66,7 @@ export function useClearList({ _id }: { _id: string }) {
                   <p>{t("clearList-confirm")}</p>
                 </Typography>
                 <form
+                  method="post"
                   onSubmit={handleSubmit}
                   className="flex justify-end mt-4 gap-2"
                 >

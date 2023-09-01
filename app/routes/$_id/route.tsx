@@ -1,4 +1,4 @@
-import { Form, useNavigate, useParams } from "@remix-run/react";
+import { useNavigate, useParams } from "@remix-run/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ClientOnly } from "remix-utils";
@@ -224,8 +224,8 @@ function Shoppinglist() {
             leaveTo="translate-y-full"
           >
             <Popover.Panel static>
-              <Form
-                method="POST"
+              <form
+                method="post"
                 id="article-selection"
                 onSubmit={async (e) => {
                   e.preventDefault();
@@ -247,7 +247,7 @@ function Shoppinglist() {
                     {t("delete_selected_articles")}
                   </ButtonPrimary>
                 </div>
-              </Form>
+              </form>
             </Popover.Panel>
           </Transition>
         )}
