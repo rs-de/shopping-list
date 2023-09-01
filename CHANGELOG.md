@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.0 2023-08-31
+
+- Add clear list button
+
 ## 1.6.1 2023-08-29
 
 - Minor SEO
