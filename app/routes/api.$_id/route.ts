@@ -1,7 +1,7 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { ShoppingList } from "~/services/shoppinglist";
-import { ShoppingListModel } from "~/services/shoppinglist";
+import { ShoppingListModel, isShoppingList } from "~/services/shoppinglist";
 import {
   addArticle,
   changeArticle,
@@ -21,9 +21,9 @@ export async function loader({ params }: LoaderArgs) {
 }
 
 export async function action({ request }: LoaderArgs) {
-  const formData = await request.formData();
   switch (request.method) {
-    case "PATCH":
+    case "PATCH": {
+      const formData = await request.formData();
       switch (formData.get("_action")) {
         case "addArticle": {
           return await addArticle(formData);
@@ -47,6 +47,21 @@ export async function action({ request }: LoaderArgs) {
           });
         }
       }
+    }
+    case "PUT": {
+      const shoppingList = await request.json();
+      if (isShoppingList(shoppingList)) {
+        await ShoppingListModel.findByIdAndUpdate(shoppingList._id, {
+          $set: { articles: shoppingList.articles },
+        }).exec();
+        return json({});
+      } else {
+        return new Response(null, {
+          status: 400,
+          statusText: "invalid ShoppingList json",
+        });
+      }
+    }
     default:
       return new Response(null, { status: 405 });
   }

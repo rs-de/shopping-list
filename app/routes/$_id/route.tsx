@@ -7,7 +7,7 @@ import { Spinner } from "~/components/Spinner";
 import TextShadow from "~/components/TextShadow";
 import Typography from "~/components/Typography";
 import { LOCAL_STORAGE_KEY } from "~/constants";
-import { api } from "~/store/api";
+import { api, isFetchError } from "~/store/api";
 import { RejigContextProvider } from "./RejigContext";
 import InputArticle from "./InputArticle";
 import { Popover, Transition } from "@headlessui/react";
@@ -35,8 +35,8 @@ function Shoppinglist() {
   const { _id = "" } = useParams();
   const {
     data: shoppingList,
-    isError,
     refetch,
+    error,
   } = api.useGetShoppingListQuery({ _id }, { skip: !_id });
   const [patchShoppingList] = api.usePatchShoppingListMutation();
   const { t } = useTranslation();
@@ -67,7 +67,7 @@ function Shoppinglist() {
 
   const [autoFocus, setAutoFocus] = React.useState<string>("new");
 
-  if (isError) {
+  if (error && !isFetchError(error)) {
     return (
       <Typography className="flex-1 flex flex-col items-center p-4">
         <div className="border border-yellow-8 rounded-lg p-2 bg-yellow-4 mb-4">
@@ -172,7 +172,12 @@ function Shoppinglist() {
                 }
                 await patchShoppingList(formData).unwrap();
               } catch (error) {
-                enqueueSnackbar(t("service_error"), { variant: "warning" });
+                if (isFetchError(error)) {
+                  //network errors are expected
+                  console.warn(error);
+                } else {
+                  enqueueSnackbar(t("service_error"), { variant: "warning" });
+                }
               }
             }}
           >

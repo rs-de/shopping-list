@@ -10,6 +10,8 @@ const baseQuery = fetchBaseQuery({
   headers: { accept: "application/json" },
 });
 
+let shoppingListSyncInterval: ReturnType<typeof setInterval> | null = null;
+
 export const api = createApi({
   baseQuery,
   refetchOnFocus: true,
@@ -35,7 +37,7 @@ export const api = createApi({
         body: formData,
         formData: true,
       }),
-      onQueryStarted(formData, { dispatch, queryFulfilled }) {
+      onQueryStarted(formData, { dispatch, queryFulfilled, getState }) {
         let _id = String(formData.get("_id"));
         dispatch(
           api.util.updateQueryData("getShoppingList", { _id }, (draft) => {
@@ -44,10 +46,33 @@ export const api = createApi({
           }),
         );
         //If a request fails, we can not be sure about consistency anymore.
-        //Best is, to trigger reload of the resource ...
+        //Best is, to treat the local state as leading and sync the server state with it.
         queryFulfilled.catch(() => {
-          dispatch(api.util.invalidateTags(["ShoppingList"]));
+          if (shoppingListSyncInterval) {
+            clearInterval(shoppingListSyncInterval);
+          }
+          shoppingListSyncInterval = setInterval(() => {
+            let { data: shoppingList } = api.endpoints.getShoppingList.select({
+              _id,
+            })(getState());
+            shoppingList &&
+              dispatch(api.endpoints.putShoppingList.initiate(shoppingList));
+          }, 1000);
         });
+      },
+    }),
+    putShoppingList: builder.mutation<{}, ShoppingList>({
+      query: (shoppingList) => ({
+        url: `/${encodeURIComponent(String(shoppingList._id))}`,
+        method: "PUT",
+        body: shoppingList,
+      }),
+      invalidatesTags: (result, error, shoppingList) => {
+        if (!error) {
+          clearInterval(shoppingListSyncInterval!);
+          return [{ type: "ShoppingList", id: shoppingList._id }];
+        }
+        return [];
       },
     }),
     deleteShoppingList: builder.mutation<void, { _id: string }>({
@@ -132,4 +157,9 @@ export function isFetchBaseQueryError(
   error: any,
 ): error is FetchBaseQueryError {
   return Boolean(error?.status);
+}
+
+//this is not an exception, network errors are expected
+export function isFetchError(error: any): error is FetchBaseQueryError {
+  return error?.status === "FETCH_ERROR" || error?.status === "TIMEOUT_ERROR";
 }
