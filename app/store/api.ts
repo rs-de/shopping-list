@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import invariant from "tiny-invariant";
 import { moveArticles } from "~/utils/moveArticles";
 import type { Article, ShoppingList } from "~/services/shoppinglist";
 import { isArrayOfString } from "~/utils/isArrayOfString";
@@ -38,26 +37,17 @@ export const api = createApi({
       }),
       onQueryStarted(formData, { dispatch, queryFulfilled }) {
         let _id = String(formData.get("_id"));
-        let patchResult;
-        //optimistic update
-        patchResult = dispatch(
+        dispatch(
           api.util.updateQueryData("getShoppingList", { _id }, (draft) => {
+            //optimistic updates on draft shoppingList
             draft && patchShoppingList({ shoppingList: draft, formData });
           }),
         );
-        //use the updated resource, to update the state
-        queryFulfilled
-          .then(({ data }) => {
-            data &&
-              dispatch(
-                api.util.updateQueryData(
-                  "getShoppingList",
-                  { _id },
-                  () => data,
-                ),
-              );
-          })
-          .catch(patchResult && patchResult.undo);
+        //If a request fails, we can not be sure about consistency anymore.
+        //Best is, to trigger reload of the resource ...
+        queryFulfilled.catch(() => {
+          dispatch(api.util.invalidateTags(["ShoppingList"]));
+        });
       },
     }),
     deleteShoppingList: builder.mutation<void, { _id: string }>({
@@ -87,20 +77,6 @@ export const api = createApi({
     }),
   }),
 });
-
-export function patchArticle({ shoppingList, formData }: PatchArg) {
-  invariant(formData.get("_id"), "article id is required");
-  invariant(
-    typeof formData.get("text") === "string",
-    "article text is required",
-  );
-  shoppingList.articles.every((article) =>
-    article.id === String(formData.get("_id"))
-      ? (article.text = String(formData.get("text"))) && false
-      : false,
-  );
-  return shoppingList;
-}
 
 //optimistic updates on draft shoppingList
 export function patchShoppingList({ shoppingList, formData }: PatchArg) {
