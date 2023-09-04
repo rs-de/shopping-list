@@ -16,6 +16,7 @@ export function useClearList({ _id }: { _id: string }) {
   const handleSubmit: FormEventHandler<HTMLFormElement> = React.useCallback(
     async (e) => {
       try {
+        e.preventDefault();
         await patchShoppingList(getFormData(e));
       } catch (error) {
         console.error(error);

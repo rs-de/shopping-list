@@ -166,6 +166,9 @@ function Shoppinglist() {
                   !formData.get("new")
                 ) {
                   return;
+                } else if (formData.get("_action") === "clearList") {
+                  clearList({ _id });
+                  return;
                 }
                 await patchShoppingList(formData).unwrap();
               } catch (error) {
@@ -196,17 +199,11 @@ function Shoppinglist() {
               >
                 {t("Add")}
               </ButtonPrimary>
-              <ButtonSecondary
-                type="submit"
-                name="_action"
-                value="clearList"
-                onClick={(e) => {
-                  e.preventDefault();
-                  clearList({ _id });
-                }}
-              >
-                {t("clearList")}
-              </ButtonSecondary>
+              {shoppingList.articles.length > 0 && (
+                <ButtonSecondary type="submit" name="_action" value="clearList">
+                  {t("clearList")}
+                </ButtonSecondary>
+              )}
               <ButtonShare />
             </div>
           </form>
