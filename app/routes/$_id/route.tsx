@@ -224,9 +224,10 @@ function Shoppinglist() {
               <form
                 method="post"
                 id="article-selection"
-                onSubmit={async (e) => {
+                onSubmit={(e) => {
                   e.preventDefault();
-                  await patchShoppingList(getFormData(e));
+                  //no wait for response, because we do not want to block the UI
+                  patchShoppingList(getFormData(e));
                   setChecked(new Set());
                 }}
                 className="w-full p-8"
