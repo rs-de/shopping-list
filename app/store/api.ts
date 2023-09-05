@@ -98,7 +98,7 @@ export const api = createApi({
         queryFulfilled.then(({ data: { version } }) => {
           if (
             version &&
-            version === document.documentElement.dataset.appversion
+            version !== document.documentElement.dataset.appversion
           ) {
             window.caches.delete("all-cache").then(() => {
               window.location.reload();
