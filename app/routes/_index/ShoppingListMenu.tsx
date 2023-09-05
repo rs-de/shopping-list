@@ -38,7 +38,6 @@ function ShoppingListMenu() {
             let { _id } = await createShoppinglist().unwrap();
             invariant(Boolean(_id), "id is falsy");
             navigate(`/${_id}`);
-            enqueueSnackbar(t("createShoppinglistSucceeded"));
           } catch (error) {
             if (isFetchBaseQueryError(error) && error.status === 429) {
               enqueueSnackbar(t("createShoppinglistRateLimitError"), {
@@ -55,7 +54,7 @@ function ShoppingListMenu() {
       >
         <ButtonPrimary
           type="submit"
-          className="shadow-xl shadow-black w-96 bg-primary-3/90"
+          className="shadow-xl shadow-black w-80 sm:w-96 bg-primary-3/90"
           isLoading={isLoading}
         >
           {t("create_shoppingList")}
