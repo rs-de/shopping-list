@@ -22,6 +22,8 @@ setupListeners(store.dispatch, (dispatch, actions) => {
   const handleVisibilityChange = () => {
     if (window.document.visibilityState === "visible") {
       dispatch(actions.onFocus());
+      //check for new app version, see implementation of getAppVersion
+      dispatch(api.endpoints.getAppVersion.initiate());
     } else {
       dispatch(actions.onFocusLost());
     }

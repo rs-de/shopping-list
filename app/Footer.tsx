@@ -1,9 +1,9 @@
 import { Link } from "@remix-run/react";
 import { useTranslation } from "react-i18next";
-import packageJson from "../package.json";
 
-//@ts-ignore
+import packageJson from "../package.json";
 let version = packageJson.version;
+
 export default function Footer() {
   let { t } = useTranslation();
   return (

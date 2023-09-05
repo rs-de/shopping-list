@@ -92,13 +92,20 @@ export const api = createApi({
         formData: true,
       }),
     }),
-    getVersions: builder.query<
-      { shoppingListVersion: string; appVersion: string },
-      { listId: string }
-    >({
-      query: ({ listId }) => ({
-        url: `/${encodeURIComponent(listId)}/versions`,
-      }),
+    getAppVersion: builder.query<{ version: string }, void>({
+      query: () => ({ url: `/version` }),
+      onQueryStarted(_, { queryFulfilled }) {
+        queryFulfilled.then(({ data: { version } }) => {
+          if (
+            version &&
+            version === document.documentElement.dataset.appversion
+          ) {
+            window.caches.delete("all-cache").then(() => {
+              window.location.reload();
+            });
+          }
+        });
+      },
     }),
   }),
 });

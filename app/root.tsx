@@ -27,6 +27,8 @@ import { Suspense } from "react";
 import { ErrorBoundary as ReactErrorBoundary } from "react-error-boundary";
 import { ErrorBoundary } from "./routes/$";
 import { SnackbarProvider } from "notistack";
+import packageJson from "../package.json";
+let appVersion = packageJson.version;
 
 export const headers: HeadersFunction = () => {
   return {
@@ -66,6 +68,7 @@ export async function loader({ request }: LoaderArgs) {
       locale,
       title: t("page-title"),
       description: t("page-description"),
+      appVersion,
     },
     {
       headers: {
@@ -76,16 +79,15 @@ export async function loader({ request }: LoaderArgs) {
 }
 
 export default function App() {
-  let { locale } = useLoaderData();
+  let { locale, cspScriptNonce, appVersion } = useLoaderData();
   let { i18n } = useTranslation();
   useChangeLanguage(locale);
-  let { cspScriptNonce } = useLoaderData();
   if (typeof document !== "undefined") {
     cspScriptNonce = "";
   }
 
   return (
-    <html lang={locale} dir={i18n.dir()}>
+    <html lang={locale} dir={i18n.dir()} data-appversion={appVersion}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />

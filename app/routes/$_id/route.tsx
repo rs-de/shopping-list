@@ -16,7 +16,6 @@ import ButtonShare from "~/components/ButtonShare";
 import Rejig from "./Rejig";
 import { getFormData } from "~/utils/getFormData";
 import type { V2_MetaFunction } from "@remix-run/node";
-import { enqueueSnackbar } from "notistack";
 import { nanoid } from "nanoid";
 import { useClearList } from "./ClearList/useClearList";
 
@@ -170,14 +169,10 @@ function Shoppinglist() {
                   clearList({ _id });
                   return;
                 }
-                await patchShoppingList(formData).unwrap();
+                patchShoppingList(formData).unwrap();
               } catch (error) {
-                if (isFetchError(error)) {
-                  //network errors are expected
-                  console.warn(error);
-                } else {
-                  enqueueSnackbar(t("service_error"), { variant: "warning" });
-                }
+                //network errors are expected
+                console.warn(error);
               }
             }}
           >
