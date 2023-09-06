@@ -3,6 +3,8 @@ import { moveArticles } from "~/utils/moveArticles";
 import type { Article, ShoppingList } from "~/services/shoppinglist";
 import { isArrayOfString } from "~/utils/isArrayOfString";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { enqueueSnackbar } from "notistack";
+import { t } from "i18next";
 
 const baseUrl = "/api";
 const baseQuery = fetchBaseQuery({
@@ -39,7 +41,7 @@ export const api = createApi({
       }),
       onQueryStarted(formData, { dispatch, queryFulfilled, getState }) {
         let _id = String(formData.get("_id"));
-        dispatch(
+        let optimisticUpdate = dispatch(
           api.util.updateQueryData("getShoppingList", { _id }, (draft) => {
             //optimistic updates on draft shoppingList
             draft && patchShoppingList({ shoppingList: draft, formData });
@@ -47,17 +49,24 @@ export const api = createApi({
         );
         //If a request fails, we can not be sure about consistency anymore.
         //Best is, to treat the local state as leading and sync the server state with it.
-        queryFulfilled.catch(() => {
-          if (shoppingListSyncInterval) {
-            clearInterval(shoppingListSyncInterval);
+        queryFulfilled.catch((exception) => {
+          if (isHttpError(exception?.error)) {
+            optimisticUpdate.undo();
+            enqueueSnackbar(t("service_error"), { variant: "error" });
+          } else {
+            if (shoppingListSyncInterval) {
+              clearInterval(shoppingListSyncInterval);
+            }
+            shoppingListSyncInterval = setInterval(() => {
+              let { data: shoppingList } = api.endpoints.getShoppingList.select(
+                {
+                  _id,
+                },
+              )(getState());
+              shoppingList &&
+                dispatch(api.endpoints.putShoppingList.initiate(shoppingList));
+            }, 1000);
           }
-          shoppingListSyncInterval = setInterval(() => {
-            let { data: shoppingList } = api.endpoints.getShoppingList.select({
-              _id,
-            })(getState());
-            shoppingList &&
-              dispatch(api.endpoints.putShoppingList.initiate(shoppingList));
-          }, 1000);
         });
       },
     }),
@@ -169,4 +178,10 @@ export function isFetchBaseQueryError(
 //this is not an exception, network errors are expected
 export function isFetchError(error: any): error is FetchBaseQueryError {
   return error?.status === "FETCH_ERROR" || error?.status === "TIMEOUT_ERROR";
+}
+
+export function isHttpError(
+  error: any,
+): error is FetchBaseQueryError & { status: number } {
+  return Number.parseInt(error?.status) >= 400;
 }

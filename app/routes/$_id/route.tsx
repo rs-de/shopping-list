@@ -169,9 +169,8 @@ function Shoppinglist() {
                   clearList({ _id });
                   return;
                 }
-                patchShoppingList(formData).unwrap();
+                await patchShoppingList(formData);
               } catch (error) {
-                //network errors are expected
                 console.warn(error);
               }
             }}
@@ -225,10 +224,14 @@ function Shoppinglist() {
                 method="post"
                 id="article-selection"
                 onSubmit={(e) => {
-                  e.preventDefault();
-                  //no wait for response, because we do not want to block the UI
-                  patchShoppingList(getFormData(e));
-                  setChecked(new Set());
+                  try {
+                    e.preventDefault();
+                    //no wait for response, because we do not want to block the UI
+                    patchShoppingList(getFormData(e));
+                    setChecked(new Set());
+                  } catch (error) {
+                    console.warn(error);
+                  }
                 }}
                 className="w-full p-8"
               >

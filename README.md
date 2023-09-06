@@ -2,7 +2,7 @@
 
 This little application has been developed in order to learn and review some technologies and frameworks.
 
-- Remix ( before Next.js with experimental React server actions )
+- [Remix](https://remix.run) (project started with Next.js in order to learn and compare)
 - tailwindcss
 - Mongoose / [MongoDB Atlas](https://www.mongodb.com)
 - [Vercel](https://vercel.com) for hosting

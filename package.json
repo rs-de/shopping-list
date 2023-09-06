@@ -11,7 +11,8 @@
     "build:remix": "cross-env NODE_ENV=production remix build",
     "build:worker": "esbuild ./app/entry.worker.ts --outfile=./public/entry.worker.js --minify --bundle --platform=node --format=esm --define:process.env.NODE_ENV='\"production\"'",
     "dev:remix": "cross-env NODE_ENV=development remix dev",
-    "dev:worker": "esbuild ./app/entry.worker.ts --outfile=./public/entry.worker.js --bundle --platform=node --format=esm --define:process.env.NODE_ENV='\"development\"' --watch"
+    "dev:worker": "esbuild ./app/entry.worker.ts --outfile=./public/entry.worker.js --bundle --platform=node --format=esm --define:process.env.NODE_ENV='\"development\"' --watch",
+    "test": "cypress run"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
