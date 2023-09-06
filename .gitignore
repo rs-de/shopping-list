@@ -1,9 +1,9 @@
 node_modules
 
-/.cache
-/build
-/public/build
-/public/entry.worker.js
+.cache
+build
+public/build
+public/entry.worker.js
 .env
 .eslintcache
 .vercel
